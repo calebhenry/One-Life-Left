@@ -6,11 +6,13 @@ using UnityEngine;
 public class Attack : MonoBehaviour
 {
     public float AttackLength = 0.3f;
-    public float LastAttack = 0;
+    public int AttackDamage = 1;
+    float LastAttack = 0;
+    Collider2D Collider;
     // Start is called before the first frame update
     void Start()
     {
-        
+        Collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
@@ -22,13 +24,24 @@ public class Attack : MonoBehaviour
         } 
         else if (gameObject.activeSelf)
         {
-            gameObject.SetActive(false);
+            Collider.enabled = false;
         }
     }
 
     public void StartAttack()
     {
-        gameObject.SetActive(true);
+        Collider.enabled = true;
         LastAttack = AttackLength;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Attack" + collision.tag);
+        if(collision.tag == "Enemy")
+        {
+            Debug.Log("Attack2");
+            HealthManager health = collision.GetComponent<HealthManager>();
+            health.TakeDamage(1);
+        }
     }
 }
