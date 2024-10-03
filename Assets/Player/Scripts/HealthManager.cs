@@ -20,10 +20,13 @@ public class HealthManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    /// <summary>
+    /// Decrements the object's health by a specified integer
+    /// </summary>
+    /// <param name="damage">Amount to decrement by</param>
     public void TakeDamage(int damage)
     {
-        Debug.Log("Took Dammage");
         health -= damage;
+        Debug.Log(GetComponent<Collider2D>().tag + " took damage, remaining health is " + health);
     }
 }
