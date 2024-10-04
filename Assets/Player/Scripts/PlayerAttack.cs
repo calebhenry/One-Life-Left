@@ -7,8 +7,9 @@ public class Attack : MonoBehaviour
 {
     public float AttackLength = 0.3f;
     public int AttackDamage = 1;
-    float LastAttack = 0;
-    Collider2D Collider;
+    public GameObject AttackModel;
+    private float LastAttack = 0;
+    private Collider2D Collider;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class Attack : MonoBehaviour
         else if (gameObject.activeSelf)
         {
             Collider.enabled = false;
+            AttackModel.SetActive(false);
         }
     }
 
@@ -32,6 +34,8 @@ public class Attack : MonoBehaviour
     {
         Collider.enabled = true;
         LastAttack = AttackLength;
+        AttackModel.SetActive(true);
+        Debug.Log("Started Attack");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
