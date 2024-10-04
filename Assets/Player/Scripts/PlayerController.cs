@@ -63,8 +63,8 @@ public class PlayerController : MonoBehaviour
                 positionChange += Vector2.right;
             }
         }
-        Debug.Log(positionChange.normalized * Speed * Time.deltaTime);
-        Debug.Log(positionChange.normalized);
+        //Debug.Log(positionChange.normalized * Speed * Time.deltaTime);
+        //Debug.Log(positionChange.normalized);
         RigidBody.MovePosition(RigidBody.position + positionChange.normalized * Speed * Time.deltaTime);
 
         // Determine direction and angle to mouse

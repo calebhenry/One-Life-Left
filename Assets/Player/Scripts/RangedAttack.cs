@@ -27,8 +27,7 @@ public class RangedAttack : MonoBehaviour
         if (DateTime.Now >= lastAttack.AddSeconds(attackInterval) && burst)
         {
             Debug.Log("ATTACK!!!");
-            GameObject bullet = Instantiate(projectile, gameObject.transform);
-            bullet.GetComponent<Rigidbody2D>().velocity = (player.transform.position-gameObject.transform.position).normalized;
+            StartCoroutine(BurstAttack());
             lastAttack = DateTime.Now;
         }
         else
@@ -40,13 +39,15 @@ public class RangedAttack : MonoBehaviour
     /// Attacks in bursts depending on the projectile amount
     /// </summary>
     /// <returns>Nothing</returns>
-    IEnumerable BurstAttack()
+    IEnumerator BurstAttack()
     {
-        for (int i = 0; i < attackAmt; i++)
+        for (int i = 0; i <= attackAmt; i++)
         {
-            // yada yada yada
+            yield return new WaitForSeconds(.5f);
+            GameObject bullet = Instantiate(projectile, gameObject.transform);
+            bullet.GetComponent<Rigidbody2D>().velocity = (player.transform.position - gameObject.transform.position).normalized * 3;
         }
-        yield return null;
+        
 
     }
 }
