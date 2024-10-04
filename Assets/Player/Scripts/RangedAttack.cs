@@ -11,6 +11,7 @@ public class RangedAttack : MonoBehaviour
     public bool burst;
     public double attackInterval;
     public int attackAmt;
+    public float ProjectileSpeed = 3;
     [SerializeField] GameObject projectile;
     // Start is called before the first frame update
     private GameObject player;
@@ -45,9 +46,8 @@ public class RangedAttack : MonoBehaviour
         {
             yield return new WaitForSeconds(.5f);
             GameObject bullet = Instantiate(projectile, gameObject.transform);
-            bullet.GetComponent<Rigidbody2D>().velocity = (player.transform.position - gameObject.transform.position).normalized * 3;
+            var manager = bullet.GetComponent<ProjectileManager>();
+            manager.Fire((player.transform.position - gameObject.transform.position).normalized, ProjectileSpeed);
         }
-        
-
     }
 }

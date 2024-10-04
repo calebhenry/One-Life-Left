@@ -117,6 +117,7 @@ MonoBehaviour:
   burst: 1
   attackInterval: 3
   attackAmt: 2
+  ProjectileSpeed: 3
   projectile: {fileID: 1969323221679739826, guid: cd6e3314a5750e54f867a5878a0df814, type: 3}
 --- !u!114 &7750708836799355110
 MonoBehaviour:

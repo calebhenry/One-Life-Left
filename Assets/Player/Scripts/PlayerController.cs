@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
             // Start attack, dont allow till cooldown over
             if (Input.GetMouseButton(0) && TimeSinceAttack >= AttackCooldown)
             {
-                Attack.StartAttack();
+                Attack.StartAttack(direction);
                 TimeSinceAttack = 0;
                 Energy += 1;
             }
@@ -123,9 +123,18 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            RigidBody.MovePosition(RigidBody.position + DashDirection * DashSpeed * Time.deltaTime);
-            TimeSinceDash += Time.deltaTime;
-            if (TimeSinceDash > DashTime)
+            int numCollisons = RigidBody.Cast(DashDirection, ContactFilter, Collisions, Offset + Time.deltaTime *DashSpeed);
+            if (numCollisons == 0)
+            {
+                RigidBody.MovePosition(RigidBody.position + DashDirection * DashSpeed * Time.deltaTime);
+                TimeSinceDash += Time.deltaTime;
+                if (TimeSinceDash >= DashTime)
+                {
+                    Dashing = false;
+                    TimeSinceDash = 0;
+                }
+            }
+            else
             {
                 Dashing = false;
                 TimeSinceDash = 0;

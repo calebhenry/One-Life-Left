@@ -10,6 +10,7 @@ public class Attack : MonoBehaviour
     public GameObject AttackModel;
     private float LastAttack = 0;
     private Collider2D Collider;
+    private Vector2 AttackDirection;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,22 +31,26 @@ public class Attack : MonoBehaviour
         }
     }
 
-    public void StartAttack()
+    public void StartAttack(Vector2 direction)
     {
         Collider.enabled = true;
         LastAttack = AttackLength;
         AttackModel.SetActive(true);
-        Debug.Log("Started Attack");
+        AttackDirection = direction;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Attack" + collision.tag);
-        if(collision.tag == "Enemy")
+        switch (collision.tag)
         {
-            Debug.Log("Attack2");
-            HealthManager health = collision.GetComponent<HealthManager>();
-            health.TakeDamage(1);
+            case "Enemy":
+                HealthManager health = collision.GetComponent<HealthManager>();
+                health.TakeDamage(1);
+                break;
+            case "Projectile":
+                ProjectileManager projectile = collision.GetComponent<ProjectileManager>();
+                projectile.Deflect(AttackDirection);
+                break;
         }
     }
 }
