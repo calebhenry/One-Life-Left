@@ -57,16 +57,18 @@ public class ProjectileManager : MonoBehaviour
         switch (collision.tag)
         {
             case "Player":
-                Player.GetComponent<HealthManager>().TakeDamage(1);
+                collision.GetComponent<PlayerHealth>().TakeDamage(1);
+                gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
             case string s when IgnoreTags.Contains(s):
                 break;
             case "Breakable":
                 Breakable breakable = collision.GetComponent<Breakable>();
+                gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 breakable.Break();
                 break;
             default:
-                gameObject.GetComponent<HealthManager>().TakeDamage(1);
+                gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
         }
     }
@@ -77,16 +79,18 @@ public class ProjectileManager : MonoBehaviour
         switch (collision.tag)
         {
             case "Enemy":
-                collision.GetComponent<HealthManager>().TakeDamage(1);
+                collision.GetComponent<NPCHealth>().TakeDamage(1);
+                gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
             case string s when IgnoreTags.Contains(s):
                 break;
             case "Breakable":
                 Breakable breakable = collision.GetComponent<Breakable>();
+                gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 breakable.Break();
                 break;
             default:
-                gameObject.GetComponent<HealthManager>().TakeDamage(1);
+                gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
         }
     }

@@ -44,7 +44,7 @@ public class Attack : MonoBehaviour
         switch (collision.tag)
         {
             case "Enemy":
-                HealthManager health = collision.GetComponent<HealthManager>();
+                NPCHealth health = collision.GetComponent<NPCHealth>();
                 health.TakeDamage(1);
                 break;
             case "Projectile":

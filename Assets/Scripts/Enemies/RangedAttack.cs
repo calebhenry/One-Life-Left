@@ -27,7 +27,6 @@ public class RangedAttack : MonoBehaviour
     {
         if (DateTime.Now >= lastAttack.AddSeconds(attackInterval) && burst)
         {
-            Debug.Log("ATTACK!!!");
             StartCoroutine(BurstAttack());
             lastAttack = DateTime.Now;
         }
