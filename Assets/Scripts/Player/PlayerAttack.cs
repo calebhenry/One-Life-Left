@@ -46,7 +46,7 @@ public class Attack : MonoBehaviour
             case "Enemy":
                 if (collision.GetType() != typeof(CircleCollider2D))
                 {
-                    HealthManager health = collision.GetComponent<HealthManager>();
+                    NPCHealth health = collision.GetComponent<NPCHealth>();
                     health.TakeDamage(1);
                 }
                 break;

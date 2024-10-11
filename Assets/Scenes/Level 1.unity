@@ -2852,7 +2852,7 @@ MonoBehaviour:
   enemyAmount: 3
   spawnInterval: 10
   enemy: {fileID: 4264523900696734018, guid: 9f1d6e3707518114dabf1b4e9967d08f, type: 3}
-  playSpace: {fileID: 0}
+  playSpace: {fileID: 332554285}
 --- !u!4 &484209230
 Transform:
   m_ObjectHideFlags: 0
