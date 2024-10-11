@@ -44,8 +44,11 @@ public class Attack : MonoBehaviour
         switch (collision.tag)
         {
             case "Enemy":
-                HealthManager health = collision.GetComponent<HealthManager>();
-                health.TakeDamage(1);
+                if (collision.GetType() != typeof(CircleCollider2D))
+                {
+                    HealthManager health = collision.GetComponent<HealthManager>();
+                    health.TakeDamage(1);
+                }
                 break;
             case "Projectile":
                 ProjectileManager projectile = collision.GetComponent<ProjectileManager>();

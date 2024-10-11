@@ -16,6 +16,7 @@ public class RangedAttack : MonoBehaviour
     // Start is called before the first frame update
     private GameObject player;
     private DateTime lastAttack;
+    private bool playerInSight;
     void Start()
     {
         player = GameObject.Find("Player");
@@ -25,14 +26,16 @@ public class RangedAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (DateTime.Now >= lastAttack.AddSeconds(attackInterval) && burst)
+        playerInSight = gameObject.GetComponent<NPCMovement>().playerInSight;
+        if (DateTime.Now >= lastAttack.AddSeconds(attackInterval) && burst && playerInSight)
         {
             Debug.Log("ATTACK!!!");
             StartCoroutine(BurstAttack());
             lastAttack = DateTime.Now;
         }
-        else
+        else if (!playerInSight) 
         {
+            StopAllCoroutines();
             // Leave this up to you kat, nat, or caleb for what you want to do with boss fights or other enemies
         }
     }
