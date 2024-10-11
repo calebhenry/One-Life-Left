@@ -29,7 +29,6 @@ public class RangedAttack : MonoBehaviour
         playerInSight = gameObject.GetComponent<NPCMovement>().playerInSight;
         if (DateTime.Now >= lastAttack.AddSeconds(attackInterval) && burst && playerInSight)
         {
-            Debug.Log("ATTACK!!!");
             StartCoroutine(BurstAttack());
             lastAttack = DateTime.Now;
         }

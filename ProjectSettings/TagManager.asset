@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - Attack
   - Breakable
+  - UI
   layers:
   - Default
   - TransparentFX
