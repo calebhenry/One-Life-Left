@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Tilemaps;
 
 public class NPCMovement : MonoBehaviour
 {
@@ -10,27 +9,58 @@ public class NPCMovement : MonoBehaviour
     public bool playerInSight;
     private Vector3 home;
     private Vector3 currDestination;
+    private Rigidbody2D rb;
+    private Tilemap WalkableTiles;
+    private List<Vector3> potentialPathways = new List<Vector3>();
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
+        rb = GetComponent<Rigidbody2D>();
+        WalkableTiles = GameObject.Find("BaseLayer").GetComponent<Tilemap>();
         // Set home position as the position where enemy was instantiated on the map
         home = gameObject.transform.position;
     }
-    
+
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // If player is in sightline move towards them, else return to home resting space
         if (playerInSight)
         {
             currDestination = player.transform.position;
+            // Find closest points to tile and player
+            Vector3 closestColliderPoint = player.GetComponent<BoxCollider2D>().bounds.center;
+            Vector3 closestTilePoint = WalkableTiles.WorldToCell(transform.position) - transform.position;
+            potentialPathways.Add(closestTilePoint);
+            potentialPathways.Add(new Vector3(closestTilePoint.x + 1, closestTilePoint.y, 0));
+            potentialPathways.Add(new Vector3(closestTilePoint.x + 1, closestTilePoint.y + 1, 0));
+            potentialPathways.Add(new Vector3(closestTilePoint.x, closestTilePoint.y + 1, 0));
+
+
+            closestTilePoint = ClosestTilePoint(potentialPathways);
+            // raycast calculations to go here
+            CalculatePathways(closestTilePoint, 0);
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, closestColliderPoint - transform.position, out hit,
+                float.MaxValue, ~0, QueryTriggerInteraction.Ignore))
+            {
+                Debug.DrawRay(transform.position, closestColliderPoint - transform.position, Color.green);
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, closestColliderPoint - transform.position, Color.red);
+            }
         }
         else
         {
             currDestination = home;
         }
-        gameObject.GetComponent<Rigidbody2D>().velocity = (currDestination - gameObject.transform.position).normalized;
+
+        Vector2 playerDirection = (currDestination - gameObject.transform.position);
+        rb.velocity = playerDirection.normalized;
+        potentialPathways.Clear();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -46,5 +76,29 @@ public class NPCMovement : MonoBehaviour
         {
             playerInSight = false;
         }
+    }
+    private void CalculatePathways(Vector3 startingVector, int tileWidth)
+    {
+        if (tileWidth > 3)
+        {
+            return;
+        }
+        List<Vector3> pathways = new List<Vector3>();
+        
+        pathways.Add(new Vector3(startingVector.x - 1, startingVector.y, 0));
+        pathways.Add(new Vector3(startingVector.x + 1, startingVector.y, 0));
+        pathways.Add(new Vector3(startingVector.x, startingVector.y + 1, 0));
+        pathways.Add(new Vector3(startingVector.x, startingVector.y - 1, 0));
+        //pathways.ForEach((pathway) => { Debug.DrawRay(transform.position, pathway, Color.blue); });
+
+        pathways.ForEach(path => { Debug.DrawRay(transform.position, path, Color.blue); 
+                                   if(path != startingVector) CalculatePathways(path, tileWidth+1); });
+    }
+    private Vector3 ClosestTilePoint(List<Vector3> vectors)
+    {
+        Vector3 closest = vectors.OrderBy(x => x.sqrMagnitude).First();
+
+        Debug.DrawRay(transform.position, closest, Color.green);
+        return closest;
     }
 }

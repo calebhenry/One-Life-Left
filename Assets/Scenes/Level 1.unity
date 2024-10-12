@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 332554286}
   - component: {fileID: 332554288}
   - component: {fileID: 332554287}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BaseLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2849,7 +2849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b4789464f84c8447872403beefcabd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAmount: 3
+  enemyAmount: 1
   spawnInterval: 10
   enemy: {fileID: 4264523900696734018, guid: 9f1d6e3707518114dabf1b4e9967d08f, type: 3}
   playSpace: {fileID: 332554285}
@@ -4084,7 +4084,7 @@ GameObject:
   - component: {fileID: 1514629740}
   - component: {fileID: 1514629739}
   - component: {fileID: 1514629738}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CollisionObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6362,6 +6362,6 @@ SceneRoots:
   - {fileID: 1932022205616083037}
   - {fileID: 4542100630536308869}
   - {fileID: 651581119}
-  - {fileID: 484209230}
   - {fileID: 2144970663}
   - {fileID: 2042415251}
+  - {fileID: 484209230}
