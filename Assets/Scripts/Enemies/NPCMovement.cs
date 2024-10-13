@@ -37,8 +37,7 @@ public class NPCMovement : MonoBehaviour
             potentialPathways.Add(new Vector3(closestTilePoint.x + 1, closestTilePoint.y, 0));
             potentialPathways.Add(new Vector3(closestTilePoint.x + 1, closestTilePoint.y + 1, 0));
             potentialPathways.Add(new Vector3(closestTilePoint.x, closestTilePoint.y + 1, 0));
-
-
+        
             closestTilePoint = ClosestTilePoint(potentialPathways);
             // raycast calculations to go here
             CalculatePathways(closestTilePoint, 0);
