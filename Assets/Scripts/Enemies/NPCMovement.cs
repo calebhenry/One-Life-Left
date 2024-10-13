@@ -7,6 +7,7 @@ public class NPCMovement : MonoBehaviour
 {
     private GameObject player;
     public bool playerInSight;
+    public ContactFilter2D contactFilter;
     private Vector3 home;
     private Vector3 currDestination;
     private Rigidbody2D rb;
@@ -42,9 +43,9 @@ public class NPCMovement : MonoBehaviour
             // raycast calculations to go here
             CalculatePathways(closestTilePoint, 0);
 
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, closestColliderPoint - transform.position, out hit,
-                float.MaxValue, ~0, QueryTriggerInteraction.Ignore))
+            RaycastHit2D[] hits = new RaycastHit2D[10];
+            Physics2D.Raycast(transform.position, closestColliderPoint - transform.position, contactFilter, hits);
+            if (hits[1].collider?.gameObject?.tag == "Player")
             {
                 Debug.DrawRay(transform.position, closestColliderPoint - transform.position, Color.green);
             }
