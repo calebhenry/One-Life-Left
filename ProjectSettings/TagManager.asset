@@ -9,6 +9,7 @@ TagManager:
   - Attack
   - Breakable
   - UI
+  - Obstacles
   layers:
   - Default
   - TransparentFX

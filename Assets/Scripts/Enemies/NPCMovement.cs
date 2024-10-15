@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -12,7 +13,13 @@ public class NPCMovement : MonoBehaviour
     private Vector3 currDestination;
     private Rigidbody2D rb;
     private Tilemap WalkableTiles;
-    private List<Vector3> potentialPathways = new List<Vector3>();
+    private List<Vector2> branchingPaths = new List<Vector2> {  new Vector2(1f, 0), new Vector2(1f, 1f),
+                                                                new Vector2(0, 1f), new Vector2(1f, -1f),
+                                                                new Vector2(0, -1f), new Vector2(-1f, -1f),
+                                                                new Vector2(-1f, 0), new Vector2(-1f, 1f) 
+                                                             };
+    private IDictionary<Vector2, int> dp = new Dictionary<Vector2, int>();
+    private static Vector2 offset = new Vector2(.1f, .1f);
     // Start is called before the first frame update
     void Start()
     {
@@ -33,11 +40,14 @@ public class NPCMovement : MonoBehaviour
             // Find closest points to tile and player
             Vector3 closestColliderPoint = player.GetComponent<BoxCollider2D>().bounds.center;
             Vector3 closestTilePoint = WalkableTiles.WorldToCell(transform.position) - transform.position;
+            //Debug.DrawRay(transform.position, closestTilePoint, Color.blue);
+            List<Vector3> potentialPathways = new List<Vector3>();
             potentialPathways.Add(closestTilePoint);
             potentialPathways.Add(new Vector3(closestTilePoint.x + 1, closestTilePoint.y, 0));
             potentialPathways.Add(new Vector3(closestTilePoint.x + 1, closestTilePoint.y + 1, 0));
             potentialPathways.Add(new Vector3(closestTilePoint.x, closestTilePoint.y + 1, 0));
-        
+
+
             closestTilePoint = ClosestTilePoint(potentialPathways);
             // raycast calculations to go here
             CalculatePathways(closestTilePoint, 0);
@@ -60,7 +70,6 @@ public class NPCMovement : MonoBehaviour
 
         Vector2 playerDirection = (currDestination - gameObject.transform.position);
         rb.velocity = playerDirection.normalized;
-        potentialPathways.Clear();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -77,22 +86,31 @@ public class NPCMovement : MonoBehaviour
             playerInSight = false;
         }
     }
-    private void CalculatePathways(Vector3 startingVector, int tileWidth)
+    // FIXME: To make this better, make one statically shared object that has all the paths, then the enemies slowly map everything and no longer have the need to calculate besides finding
+    private void CalculatePathways(Vector2 startingVector, int tileWidth)
     {
-        if (tileWidth > 3)
+        Vector2 closestColliderPoint = player.GetComponent<BoxCollider2D>().bounds.center;
+        Vector2 playerPos = new Vector2(transform.position.x, transform.position.y);
+        if (tileWidth >= 4)
         {
             return;
         }
-        List<Vector3> pathways = new List<Vector3>();
+        if (Vector2.Distance(startingVector + playerPos, closestColliderPoint) <= 1)
+        {
+            Debug.DrawRay(startingVector + playerPos, (startingVector+playerPos-closestColliderPoint)*-1, Color.green);
+            return;
+        }
+        branchingPaths.ForEach(path => {
+            RaycastHit2D[] hits = new RaycastHit2D[10];
+            Physics2D.Raycast(startingVector + playerPos, path, contactFilter, hits, 1f);
+            if (hits[0].collider?.gameObject?.tag != "Obstacles")
+            {
+                CalculatePathways(startingVector + path, tileWidth + 1);
+                Debug.DrawRay(startingVector + playerPos, path, Color.blue);
+            }
+            
+        });   
         
-        pathways.Add(new Vector3(startingVector.x - 1, startingVector.y, 0));
-        pathways.Add(new Vector3(startingVector.x + 1, startingVector.y, 0));
-        pathways.Add(new Vector3(startingVector.x, startingVector.y + 1, 0));
-        pathways.Add(new Vector3(startingVector.x, startingVector.y - 1, 0));
-        //pathways.ForEach((pathway) => { Debug.DrawRay(transform.position, pathway, Color.blue); });
-
-        pathways.ForEach(path => { Debug.DrawRay(transform.position, path, Color.blue); 
-                                   if(path != startingVector) CalculatePathways(path, tileWidth+1); });
     }
     private Vector3 ClosestTilePoint(List<Vector3> vectors)
     {
