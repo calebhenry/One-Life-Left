@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public ContactFilter2D ContactFilter;
     private Rigidbody2D RigidBody;
     private Animator Animator;
+    private SpriteRenderer Sprite;
     List<RaycastHit2D> Collisions = new();
     [Header("Attacks")]
     public float AttackCooldown = 0.6f;
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         RigidBody = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
+        Sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -72,6 +75,15 @@ public class PlayerController : MonoBehaviour
             }
             RigidBody.MovePosition(RigidBody.position + positionChange.normalized * Speed * Time.deltaTime);
 
+            if (positionChange.sqrMagnitude > 0) 
+            {
+                Animator.SetBool("Walking", true);
+            }
+            else
+            {
+                Animator.SetBool("Walking", false);
+            }
+
             // Determine direction and angle to mouse
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
@@ -82,6 +94,7 @@ public class PlayerController : MonoBehaviour
                 Dashing = true;
                 DashDirection = direction;
                 Energy -= DashEnergyCost;
+                Animator.SetBool("Dashing", true);
             }
 
             if (TimeSinceAttack >= AttackCooldown)
@@ -91,23 +104,21 @@ public class PlayerController : MonoBehaviour
             }
 
             // Determine nearest vector direction (using dot product thanks Dr. Yee)
-            float max = 0;
-            int roundedDirection = 0;
-            List<Vector2> list = new List<Vector2>() { Vector2.right, Vector2.left };
-            foreach (var item in list)
+            float right = Vector2.Dot(direction, Vector2.right);
+            float left = Vector2.Dot(direction, Vector2.left);
+            if (right > left && Sprite.flipX)
             {
-                float dot = Vector2.Dot(direction, item);
-                if (dot > max)
-                {
-                    max = dot;
-                    roundedDirection = list.IndexOf(item);
-                }
+                Sprite.flipX = false;
             }
-            Animator.SetInteger("Direction", roundedDirection);
+            else if (left > right && !Sprite.flipX)
+            {
+                Sprite.flipX = true;
+            }
 
             // Start attack, dont allow till cooldown over
             if (Input.GetMouseButton(0) && TimeSinceAttack >= AttackCooldown)
             {
+                Animator.SetBool("Attacking", true);
                 Attack.StartAttack(direction);
                 TimeSinceAttack = 0;
                 Energy += 1;
@@ -128,12 +139,14 @@ public class PlayerController : MonoBehaviour
                 {
                     Dashing = false;
                     TimeSinceDash = 0;
+                    Animator.SetBool("Dashing", false);
                 }
             }
             else
             {
                 Dashing = false;
                 TimeSinceDash = 0;
+                Animator.SetBool("Dashing", false);
             }
         }
     }

@@ -28,6 +28,7 @@ public class Attack : MonoBehaviour
         {
             Collider.enabled = false;
             AttackModel.SetActive(false);
+            GetComponentInParent<Animator>().SetBool("Attacking", false);
         }
     }
 

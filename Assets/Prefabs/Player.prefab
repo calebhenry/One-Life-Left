@@ -112,7 +112,7 @@ SpriteRenderer:
   m_SortingLayerID: -1777882585
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 764430333, guid: d734c78d720410b4d9f0a3aa0d208b93, type: 3}
+  m_Sprite: {fileID: -961255031, guid: 6a25a2d3d158d994b9c6847966a3841e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -136,10 +136,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 5
-  DashSpeed: 20
+  DashSpeed: 10
   Offset: 0
-  DashTime: 0.1
-  DashEnergyCost: 5.05
+  DashTime: 0.2
+  DashEnergyCost: 5
   ContactFilter:
     useTriggers: 0
     useLayerMask: 0
