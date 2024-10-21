@@ -44,9 +44,9 @@ public class RangedAttack : MonoBehaviour
     /// <returns>Nothing</returns>
     IEnumerator BurstAttack()
     {
-        for (int i = 0; i <= attackAmt; i++)
+        for (int i = 0; i < attackAmt; i++)
         {
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.25f);
             GameObject bullet = Instantiate(projectile, gameObject.transform);
             var manager = bullet.GetComponent<ProjectileManager>();
             manager.Fire((player.transform.position - gameObject.transform.position).normalized, ProjectileSpeed);

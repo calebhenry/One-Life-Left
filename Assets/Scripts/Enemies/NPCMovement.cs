@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 public class NPCMovement : MonoBehaviour
 {
     private GameObject player;
+    public float EnemySpeed;
     public bool playerInSight;
     public ContactFilter2D contactFilter;
     private Vector3 home;
@@ -77,7 +78,7 @@ public class NPCMovement : MonoBehaviour
             if (Mathf.Abs(Vector2.Distance(player.transform.position, transform.position)) > 1 && !isRunning)
             {
                 StopAllCoroutines();
-                rb.velocity = playerDirection.normalized;
+                rb.velocity = playerDirection.normalized*EnemySpeed;
             }
             else
             {
@@ -96,7 +97,7 @@ public class NPCMovement : MonoBehaviour
     IEnumerator NPCRun()
     {
         isRunning = true;
-        rb.velocity = (currDestination - gameObject.transform.position).normalized * -.8f;
+        rb.velocity = (currDestination - gameObject.transform.position).normalized * EnemySpeed*-.8f;
         yield return new WaitForSeconds(1);
         isRunning = false;
     }
