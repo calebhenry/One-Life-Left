@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,7 @@ public class NPCMovement : MonoBehaviour
     private Vector3 home;
     private Vector3 currDestination;
     private Rigidbody2D rb;
+    private bool isRunning = false;
     //private Tilemap WalkableTiles;
     //private List<Vector2> branchingPaths = new List<Vector2> {  new Vector2(1f, 0), new Vector2(1f, 1f),
     //                                                            new Vector2(0, 1f), new Vector2(1f, -1f),
@@ -67,15 +69,50 @@ public class NPCMovement : MonoBehaviour
         {
             currDestination = home;
         }
-
+        
         Vector2 playerDirection = (currDestination - gameObject.transform.position);
-        rb.velocity = playerDirection.normalized;
-    }
 
+        if (currDestination != home)
+        {
+            if (Mathf.Abs(Vector2.Distance(player.transform.position, transform.position)) > 1 && !isRunning)
+            {
+                StopAllCoroutines();
+                rb.velocity = playerDirection.normalized;
+            }
+            else
+            {
+                StartCoroutine(NPCRun());
+            }
+        }
+        else
+        {
+            if (Mathf.Abs(Vector2.Distance(home, transform.position)) > .1)
+                rb.velocity = playerDirection.normalized;    
+            else
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+        
+    }
+    IEnumerator NPCRun()
+    {
+        isRunning = true;
+        rb.velocity = (currDestination - gameObject.transform.position).normalized * -.8f;
+        yield return new WaitForSeconds(1);
+        isRunning = false;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
+            rb.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+            playerInSight = true;
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            rb.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
             playerInSight = true;
         }
     }
@@ -83,6 +120,7 @@ public class NPCMovement : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            rb.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
             playerInSight = false;
         }
     }
@@ -111,7 +149,6 @@ public class NPCMovement : MonoBehaviour
     //        }
 
     //    });
-
     //}
     //private Vector3 ClosestTilePoint(List<Vector3> vectors)
     //{
