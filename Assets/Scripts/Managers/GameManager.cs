@@ -1,4 +1,8 @@
 using System;
+using System.Collections;
+using System.Linq;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +11,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public static event Action<GameState> OnStateChanged;
+    public static event Action<Progress> OnProgress;
+
+    public int EnemiesLeft = 0;
+    public int TotalEnemies = 0;
+    public float PlayerHealth = 5;
+    public int Energy = 0;
+
+    public static Level Level = Level.Level1;
 
     private void Awake()
     {
@@ -21,8 +33,7 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {         
     }
 
     public void GoToScene(string scene)
@@ -33,13 +44,22 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(0);
                 break;
             case "Level 1":
+                Level = Level.Level1;
                 SceneManager.LoadScene(1);
                 break;
             case "Level 2":
+                Level = Level.Level2;
                 SceneManager.LoadScene(2);
                 break;
             case "Level 3":
+                Level = Level.Level3;
                 SceneManager.LoadScene(3);
+                break;
+            case "Level End":
+                SceneManager.LoadScene(4);
+                break;
+            case "End Menu":
+                SceneManager.LoadScene(5);
                 break;
         }
     }
@@ -51,7 +71,6 @@ public class GameManager : MonoBehaviour
 
     public void OnFail()
     {
-        Debug.Log("HerwadaAWDAD");
         OnStateChanged?.Invoke(GameState.Failed);
     }
 
@@ -65,6 +84,62 @@ public class GameManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void EnemyDestroyed()
+    {
+        StartCoroutine("SetCheckEnemies");
+    }
+
+    public void BossDestroyed()
+    {
+
+    }
+
+    public void UpdateEnergy(int energy)
+    {
+        Energy++;
+    }
+
+    public void UpdatePlayerHealth(int health)
+    {
+        PlayerHealth = health;
+    }
+
+    public void OnComplete()
+    {
+        OnProgress?.Invoke(Progress.Complete);
+    }
+
+    public void OnExit()
+    {
+        GoToScene("Level End");
+    }
+
+    public void NextLevel()
+    {
+        switch (Level)
+        {
+            case Level.Level1:
+                GoToScene("Level 2");
+                break;
+            case Level.Level2:
+                GoToScene("Level 3");
+                break;
+            case Level.Level3:
+                GoToScene("End Menu");
+                break;
+        }
+    }
+
+    private IEnumerator SetCheckEnemies()
+    {
+        yield return new WaitForSeconds(0.05f);
+        EnemiesLeft = GameObject.FindGameObjectsWithTag("Enemy").Count();
+        if (EnemiesLeft == 0)
+        {
+            OnProgress?.Invoke(Progress.BossRemaining);
+        }
+    }
 }
 
 public enum GameState
@@ -72,4 +147,18 @@ public enum GameState
     Play,
     Failed,
     Paused
+}
+
+public enum Progress
+{
+    EnemiesRemaining,
+    BossRemaining,
+    Complete
+}
+
+public enum Level
+{
+    Level1,
+    Level2,
+    Level3
 }

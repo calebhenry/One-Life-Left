@@ -17,6 +17,10 @@ public class NPCHealth : MonoBehaviour
     {
         if (health < 1)
         {
+            if (gameObject.tag == "Enemy")
+                GameManager.Instance.EnemyDestroyed();
+            if (gameObject.tag == "Boss")
+                GameManager.Instance.OnComplete();
             Destroy(gameObject);
         }
     }

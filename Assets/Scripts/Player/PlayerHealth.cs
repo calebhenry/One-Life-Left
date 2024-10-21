@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        GameManager.Instance.UpdatePlayerHealth(health);
     }
 
     // Update is called once per frame
@@ -28,6 +28,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        GameManager.Instance.UpdatePlayerHealth(health);
         Debug.Log(GetComponent<Collider2D>().tag + " took damage, remaining health is " + health);
     }
 }

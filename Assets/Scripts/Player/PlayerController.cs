@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private float TimeSinceDash = 0f;
     private Vector2 DashDirection;
     private bool Dashing = false;
-    private float Energy = 0;
+    private int Energy = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -89,12 +88,14 @@ public class PlayerController : MonoBehaviour
             mousePos.z = 0;
             Vector2 direction = (mousePos - transform.position).normalized;
 
-            if (Input.GetKey(KeyCode.Space) && !Dashing && Energy > DashEnergyCost)
+            if (Input.GetKey(KeyCode.Space) && !Dashing && Energy >= DashEnergyCost)
             {
                 Dashing = true;
                 DashDirection = direction;
-                Energy -= DashEnergyCost;
+                Energy = 0;
+                GameManager.Instance.Energy = 0;
                 Animator.SetBool("Dashing", true);
+
             }
 
             if (TimeSinceAttack >= AttackCooldown)
@@ -121,7 +122,6 @@ public class PlayerController : MonoBehaviour
                 Animator.SetBool("Attacking", true);
                 Attack.StartAttack(direction);
                 TimeSinceAttack = 0;
-                Energy += 1;
             }
             else if (TimeSinceAttack < AttackCooldown)
             {
@@ -149,5 +149,11 @@ public class PlayerController : MonoBehaviour
                 Animator.SetBool("Dashing", false);
             }
         }
+    }
+
+    public void AddEnergy()
+    {
+        Energy += 1;
+        GameManager.Instance.UpdateEnergy(Energy);
     }
 }

@@ -10,6 +10,7 @@ TagManager:
   - Breakable
   - UI
   - Obstacles
+  - Boss
   layers:
   - Default
   - TransparentFX
