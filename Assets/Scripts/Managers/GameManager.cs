@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     public int TotalEnemies = 0;
     public float PlayerHealth = 5;
     public int Energy = 0;
+    public static int Collectibles = 0;
+    public static int TotalCollectibles = 0;
+    public static float LevelTime = 0;
 
     public static Level Level = Level.Level1;
 
@@ -29,11 +32,25 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         OnStateChanged?.Invoke(GameState.Play);
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     // Update is called once per frame
     void Update()
-    {         
+    {  
+        
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Contains("Level") && scene.name != "Level End")
+        {
+            Debug.Log(FindObjectsOfType<Collectible>().Count());
+            Debug.Log(FindObjectsOfType<Breakable>().Count());
+            TotalCollectibles = FindObjectsOfType<Collectible>().Count();
+            TotalCollectibles += FindObjectsOfType<Breakable>().Count(obj => obj.ContainsCollectible);
+            Collectibles = 0;
+        }
     }
 
     public void GoToScene(string scene)
@@ -62,11 +79,6 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(5);
                 break;
         }
-    }
-
-    public void OnFinish()
-    {
-        
     }
 
     public void OnFail()
@@ -112,6 +124,7 @@ public class GameManager : MonoBehaviour
 
     public void OnExit()
     {
+
         GoToScene("Level End");
     }
 
@@ -139,6 +152,11 @@ public class GameManager : MonoBehaviour
         {
             OnProgress?.Invoke(Progress.BossRemaining);
         }
+    }
+
+    public void SceneLoaded(Scene scene)
+    {
+
     }
 }
 
