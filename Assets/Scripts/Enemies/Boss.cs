@@ -32,7 +32,7 @@ public class Boss : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().enabled = true;
             GetComponent<NPCHealth>().enabled = true;
-            GetComponent<NPCMovement>().enabled = true;
+            //GetComponent<NPCMovement>().enabled = true;
             GetComponent<BoxCollider2D>().enabled = true;
             GetComponent<CircleCollider2D>().enabled = true;
         }

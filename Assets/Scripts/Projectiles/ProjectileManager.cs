@@ -98,7 +98,14 @@ public class ProjectileManager : MonoBehaviour
     IEnumerator DelayedDestroyTesting()
     {
         yield return new WaitForSeconds(3f);
-        Destroy(gameObject);
-
+        if (!Deflected)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            yield return new WaitForSeconds(3f);
+            Destroy(gameObject);
+        }
     }
 }

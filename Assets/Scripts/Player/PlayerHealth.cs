@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int health = 5;
+    [SerializeField]
+    private int health = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +18,6 @@ public class PlayerHealth : MonoBehaviour
     {
         if (health <= 0)
         {
-            Debug.Log("belgh");
             GameManager.Instance.OnFail();
         }
     }
@@ -30,5 +30,10 @@ public class PlayerHealth : MonoBehaviour
         health -= damage;
         GameManager.Instance.UpdatePlayerHealth(health);
         Debug.Log(GetComponent<Collider2D>().tag + " took damage, remaining health is " + health);
+    }
+    public void AddHealth(int health)
+    {
+        this.health += health;
+        GameManager.Instance.UpdatePlayerHealth(this.health);
     }
 }

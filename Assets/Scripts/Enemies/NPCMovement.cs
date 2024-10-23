@@ -14,6 +14,8 @@ public class NPCMovement : MonoBehaviour
     private Vector3 home;
     private Vector3 currDestination;
     private Rigidbody2D rb;
+    private SpriteRenderer Sprite;
+    private Animator Animator;
     private bool isRunning = false;
     //private Tilemap WalkableTiles;
     //private List<Vector2> branchingPaths = new List<Vector2> {  new Vector2(1f, 0), new Vector2(1f, 1f),
@@ -28,6 +30,8 @@ public class NPCMovement : MonoBehaviour
     {
         player = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
+        Sprite = GetComponent<SpriteRenderer>();
+        Animator = GetComponent<Animator>();
         //WalkableTiles = GameObject.Find("BaseLayer").GetComponent<Tilemap>();
         // Set home position as the position where enemy was instantiated on the map
         home = gameObject.transform.position;
@@ -73,6 +77,17 @@ public class NPCMovement : MonoBehaviour
         
         Vector2 playerDirection = (currDestination - gameObject.transform.position);
 
+        float right = Vector2.Dot(playerDirection, Vector2.right);
+        float left = Vector2.Dot(playerDirection, Vector2.left);
+        if (right > left && Sprite.flipX)
+        {
+            Sprite.flipX = false;
+        }
+        else if (left > right && !Sprite.flipX)
+        {
+            Sprite.flipX = true;
+        }
+
         if (currDestination != home)
         {
             if (Mathf.Abs(Vector2.Distance(player.transform.position, transform.position)) > 1 && !isRunning)
@@ -90,7 +105,10 @@ public class NPCMovement : MonoBehaviour
             if (Mathf.Abs(Vector2.Distance(home, transform.position)) > .1)
                 rb.velocity = playerDirection.normalized;    
             else
+            {
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                Animator.SetBool("Walking", false);
+            }
         }
         
     }
@@ -107,6 +125,7 @@ public class NPCMovement : MonoBehaviour
         {
             rb.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
             playerInSight = true;
+            Animator.SetBool("Walking", true);
         }
     }
     private void OnTriggerStay2D(Collider2D collision)

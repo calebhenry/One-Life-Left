@@ -1,15 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NPCHealth : MonoBehaviour
 {
-    public int health = 5;
+    [SerializeField]
+    private int health = 5;
+    private Animator Animator;
+    private Rigidbody2D RB;
+    private SpriteRenderer Sprite;
+    private bool CanDamage = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (gameObject.tag == "Enemy")
+        {
+            Animator = GetComponent<Animator>();
+            RB = GetComponent<Rigidbody2D>();
+        } 
+        Sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -18,10 +29,16 @@ public class NPCHealth : MonoBehaviour
         if (health < 1)
         {
             if (gameObject.tag == "Enemy")
+            {
                 GameManager.Instance.EnemyDestroyed();
-            if (gameObject.tag == "Boss")
-                GameManager.Instance.OnComplete();
-            Destroy(gameObject);
+                StartCoroutine(Death());
+            }
+            else
+            {
+                if (gameObject.tag == "Boss")
+                    GameManager.Instance.OnComplete();
+                Destroy(gameObject);
+            }             
         }
     }
     /// <summary>
@@ -30,7 +47,38 @@ public class NPCHealth : MonoBehaviour
     /// <param name="damage">Amount to decrement by</param>
     public void TakeDamage(int damage)
     {
-        health -= damage;
-        Debug.Log(GetComponent<Collider2D>().tag + " took damage, remaining health is " + health);
+        if (CanDamage) 
+        {
+            health -= damage;
+            if (health > 0)
+            {
+                StartCoroutine(ShowDamage());
+            }
+
+            Debug.Log(GetComponent<Collider2D>().tag + " took damage, remaining health is " + health);
+        }
+    }
+
+    private IEnumerator Death()
+    {
+        Sprite.color = Color.white;
+        Animator.SetBool("Dead", true);
+        gameObject.GetComponent<NPCMovement>().enabled = false;
+        gameObject.GetComponent<RangedAttack>().StopAllCoroutines();
+        gameObject.GetComponent<RangedAttack>().enabled = false;
+        RB.velocity = Vector3.zero;
+        RB.totalForce = Vector2.zero;
+        RB.gravityScale = 0f;
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
+    }
+
+    private IEnumerator ShowDamage()
+    {
+        Sprite.color = Color.red;
+        CanDamage = false;
+        yield return new WaitForSeconds(0.2f);
+        Sprite.color = Color.white;
+        CanDamage = true;
     }
 }

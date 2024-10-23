@@ -45,8 +45,6 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name.Contains("Level") && scene.name != "Level End")
         {
-            Debug.Log(FindObjectsOfType<Collectible>().Count());
-            Debug.Log(FindObjectsOfType<Breakable>().Count());
             TotalCollectibles = FindObjectsOfType<Collectible>().Count();
             TotalCollectibles += FindObjectsOfType<Breakable>().Count(obj => obj.ContainsCollectible);
             Collectibles = 0;
@@ -124,7 +122,6 @@ public class GameManager : MonoBehaviour
 
     public void OnExit()
     {
-
         GoToScene("Level End");
     }
 
@@ -152,11 +149,6 @@ public class GameManager : MonoBehaviour
         {
             OnProgress?.Invoke(Progress.BossRemaining);
         }
-    }
-
-    public void SceneLoaded(Scene scene)
-    {
-
     }
 }
 

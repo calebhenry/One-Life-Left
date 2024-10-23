@@ -47,7 +47,7 @@ public class RangedAttack : MonoBehaviour
         for (int i = 0; i < attackAmt; i++)
         {
             yield return new WaitForSeconds(.25f);
-            GameObject bullet = Instantiate(projectile, gameObject.transform);
+            GameObject bullet = Instantiate(projectile, gameObject.transform.position, Quaternion.identity);
             var manager = bullet.GetComponent<ProjectileManager>();
             manager.Fire((player.transform.position - gameObject.transform.position).normalized, ProjectileSpeed);
         }

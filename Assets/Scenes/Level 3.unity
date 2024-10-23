@@ -3791,7 +3791,6 @@ GameObject:
   - component: {fileID: 8285477131099346704}
   - component: {fileID: 271242363223702723}
   - component: {fileID: 5661455327908218929}
-  - component: {fileID: 9154148691971579112}
   - component: {fileID: 7486130761776862415}
   - component: {fileID: 3167398992612658697}
   - component: {fileID: 8335930066277241630}
@@ -4027,34 +4026,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 5
---- !u!114 &9154148691971579112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3437579981122415948}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb278a89b83d7341b813b2ed33f5e92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemySpeed: 0
-  playerInSight: 0
-  contactFilter:
-    useTriggers: 0
-    useLayerMask: 0
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 0
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
 --- !u!114 &9154148691971579113
 MonoBehaviour:
   m_ObjectHideFlags: 0
