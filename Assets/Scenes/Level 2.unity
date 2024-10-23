@@ -2127,7 +2127,6 @@ MonoBehaviour:
   TotalEnemies: 0
   PlayerHealth: 0
   Energy: 0
-  Level: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2236,7 +2235,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 3.0677083
+  orthographic size: 4.3046875
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2296,8 +2295,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ComponentVersion: 1
   m_AssetsPPU: 32
-  m_RefResolutionX: 320
-  m_RefResolutionY: 180
+  m_RefResolutionX: 480
+  m_RefResolutionY: 270
   m_CropFrame: 0
   m_GridSnapping: 0
   m_FilterMode: 0
@@ -3902,6 +3901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb278a89b83d7341b813b2ed33f5e92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemySpeed: 0
   playerInSight: 0
   contactFilter:
     useTriggers: 0

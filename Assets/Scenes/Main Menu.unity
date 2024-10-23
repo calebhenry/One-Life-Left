@@ -156,7 +156,8 @@ MonoBehaviour:
   TotalEnemies: 0
   PlayerHealth: 5
   Energy: 0
-  Level: 0
+  Collectibles: 0
+  LevelTime: 0
 --- !u!4 &113184021
 Transform:
   m_ObjectHideFlags: 0

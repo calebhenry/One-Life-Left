@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     private bool Paused;
     private bool UpdateText = true;
     private bool ExitAvailible = false;
+    private float LevelTime = 0;
 
     void Awake()
     {
@@ -81,6 +82,10 @@ public class UIManager : MonoBehaviour
                 UpdateText = false;
                 break;
         }
+        if (!Paused)
+        {
+            LevelTime += Time.deltaTime;
+        }
     }
 
     public void Resume()
@@ -117,6 +122,10 @@ public class UIManager : MonoBehaviour
     {
         Progress = progress;
         UpdateText = true;
+        if (progress == Progress.Complete)
+        {
+            GameManager.LevelTime = LevelTime;
+        }
     }
 
     public void ChangeVolume(float volume)

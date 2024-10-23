@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Breakable : MonoBehaviour
 {
+    public bool ContainsCollectible = false;
+    public GameObject Collectible;
     private Animator Animator;
     private bool IsBroken;
     // Start is called before the first frame update
@@ -11,12 +13,6 @@ public class Breakable : MonoBehaviour
     {
         Animator = GetComponent<Animator>();
         IsBroken = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Break()
@@ -28,5 +24,8 @@ public class Breakable : MonoBehaviour
             IsBroken = true;
             GetComponent<BoxCollider2D>().enabled = false;
         }
+        
+        if(ContainsCollectible) 
+            Instantiate(Collectible, transform.position, Quaternion.identity);
     }
 }
