@@ -37,7 +37,7 @@ public class NPCHealth : MonoBehaviour
             {
                 if (gameObject.tag == "Boss")
                     GameManager.Instance.OnComplete();
-                Destroy(gameObject);
+                DestroyImmediate(gameObject);
             }             
         }
     }
@@ -57,6 +57,11 @@ public class NPCHealth : MonoBehaviour
 
             Debug.Log(GetComponent<Collider2D>().tag + " took damage, remaining health is " + health);
         }
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
     private IEnumerator Death()

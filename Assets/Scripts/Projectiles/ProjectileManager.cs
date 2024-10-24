@@ -13,7 +13,6 @@ public class ProjectileManager : MonoBehaviour
     {
         Player = GameObject.Find("Player");
         Rigidbody = GetComponent<Rigidbody2D>();
-        StartCoroutine(DelayedDestroyTesting());
         Deflected = false;
     }
 
@@ -53,7 +52,7 @@ public class ProjectileManager : MonoBehaviour
 
     private void ProcessCollisionNotDeflected(Collider2D collision)
     {
-        List<string> IgnoreTags = new() { "Enemy", "Attack", "Projectile" };
+        List<string> IgnoreTags = new() { "Enemy", "Boss", "Attack", "Projectile" };
         switch (collision.tag)
         {
             case "Player":
@@ -82,6 +81,10 @@ public class ProjectileManager : MonoBehaviour
                 collision.GetComponent<NPCHealth>().TakeDamage(1);
                 gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
+            case "Boss":
+                collision.GetComponent<NPCHealth>().TakeDamage(1);
+                gameObject.GetComponent<NPCHealth>().TakeDamage(1);
+                break;
             case string s when IgnoreTags.Contains(s):
                 break;
             case "Breakable":
@@ -92,20 +95,6 @@ public class ProjectileManager : MonoBehaviour
             default:
                 gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
-        }
-    }
-
-    IEnumerator DelayedDestroyTesting()
-    {
-        yield return new WaitForSeconds(3f);
-        if (!Deflected)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            yield return new WaitForSeconds(3f);
-            Destroy(gameObject);
         }
     }
 }
