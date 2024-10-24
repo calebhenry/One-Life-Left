@@ -33,10 +33,10 @@ public class NPCHealth : MonoBehaviour
         if (health < 1)
         {
             //TODO: make sure bosses have sound as well, will trigger on demise
-            audioSource.Play();
             if (gameObject.tag == "Enemy")
             {
                 GameManager.Instance.EnemyDestroyed();
+                audioSource.Play();
                 StartCoroutine(Death());
             }
             else if (gameObject.tag == "Boss")
