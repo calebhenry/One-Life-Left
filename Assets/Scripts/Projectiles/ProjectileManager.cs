@@ -30,6 +30,7 @@ public class ProjectileManager : MonoBehaviour
         }
         else
         {
+  
             ProcessCollisionDeflected(collision);
         }
     }
@@ -46,6 +47,7 @@ public class ProjectileManager : MonoBehaviour
 
     public void Deflect(Vector2 direction)
     {
+        GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.8f, 0.2f);
         Rigidbody.velocity = direction * Speed;
         Deflected = true;
     }

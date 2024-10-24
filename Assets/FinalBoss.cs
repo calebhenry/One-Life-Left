@@ -13,6 +13,9 @@ public class FinalBoss : MonoBehaviour
     private DateTime lastAttack;
     private NPCHealth BossHealth;
     [SerializeField] GameObject projectile;
+    private Rigidbody2D rb;
+    private bool isActive = false;
+    private Animator animator;
     void Awake()
     {
         GameManager.OnProgress += OnGameProgressChanged;
@@ -29,65 +32,91 @@ public class FinalBoss : MonoBehaviour
         player = GameObject.Find("Player");
         BossHealth = GetComponent<NPCHealth>();
         lastAttack = DateTime.Now;
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
     // Update is called once per frame
     void FixedUpdate()
     {
+
         // Boss stages
-        if (BossHealth.GetHealth() > 10)
+        if (isActive)
         {
-            if (DateTime.Now >= lastAttack.AddSeconds(attackInterval))
+            StartCoroutine(PulseForward());
+            if (BossHealth.GetHealth() > 10)
             {
-                StartCoroutine(OscillateAttack(50, 1f, 0.1f));
-                lastAttack = DateTime.Now;
+                if (DateTime.Now >= lastAttack.AddSeconds(attackInterval))
+                {
+                    StartCoroutine(OscillateAttack(30, 1f, 0.1f));
+                    lastAttack = DateTime.Now;
+                }
+            }
+            else if (BossHealth.GetHealth() == 10)
+            {
+                animator.SetBool("StageAttack", true);
+                rb.constraints =  RigidbodyConstraints2D.FreezeAll;
+                StopAllCoroutines();
+                StartCoroutine(OscillateAttack(90, 10f, 0.1f));
+            }
+            else if (BossHealth.GetHealth() < 10 && BossHealth.GetHealth() > 5)
+            {
+                animator.SetBool("StageAttack", false);
+                rb.constraints = RigidbodyConstraints2D.None;
+                if (DateTime.Now >= lastAttack.AddSeconds(attackInterval))
+                {
+                    oscillateAttack = 1f;
+                    StartCoroutine(OscillateAttack(50, 1f, 0.075f));
+                    lastAttack = DateTime.Now;
+                }
+            }
+            else if (BossHealth.GetHealth() == 5)
+            {
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                animator.SetBool("StageAttack", true);
+                StopAllCoroutines();
+                StartCoroutine(OscillateAttack(120, 10f, 0.075f));
+            }
+            else if (BossHealth.GetHealth() > 0 && BossHealth.GetHealth() < 5)
+            {
+                animator.SetBool("StageAttack", false);
+                rb.constraints = RigidbodyConstraints2D.None;
+                if (DateTime.Now >= lastAttack.AddSeconds(attackInterval))
+                {
+                    oscillateAttack = 1f;
+                    StartCoroutine(OscillateAttack(70, 1f, 0.05f));
+                    lastAttack = DateTime.Now;
+                }
             }
         }
-        else if (BossHealth.GetHealth() == 10)
-        {
-            StopAllCoroutines();
-            StartCoroutine(OscillateAttack(120, 10f, 0.1f)); 
-        }
-        else if (BossHealth.GetHealth() < 10 && BossHealth.GetHealth() > 5)
-        {
-           
-            if (DateTime.Now >= lastAttack.AddSeconds(attackInterval))
-            {
-                oscillateAttack = 1f;
-                StartCoroutine(OscillateAttack(70, 1f, 0.075f));
-                lastAttack = DateTime.Now;
-            }
-        }
-        else if (BossHealth.GetHealth() == 5)
-        {
-            StopAllCoroutines();
-            StartCoroutine(OscillateAttack(120, 10f, 0.05f));
-        }
-        else if (BossHealth.GetHealth() > 0 && BossHealth.GetHealth() < 5) 
-        {
-            if (DateTime.Now >= lastAttack.AddSeconds(attackInterval))
-            {
-                oscillateAttack = 1f;
-                StartCoroutine(OscillateAttack(90, 1f, 0.075f));
-                lastAttack = DateTime.Now;
-            }
-        }
-        /*else { StopAllCoroutines(); }*/
 
     }
     IEnumerator OscillateAttack(int bulletAmt, float rotation, float rotationInterval)
     {
         for (int i = 0; i < bulletAmt; i++) {
             Vector2 playerPos = player.transform.position - transform.position;
+
+            // Oscillate between two angles
             if (oscillateAttack >= rotation) oscillateAdd = -rotationInterval;
             else if (oscillateAttack <= -rotation) oscillateAdd = rotationInterval;
             oscillateAttack += oscillateAdd;
+
+            // Get the correct vector to instantiate by
             Vector2 playerOscillate = GetB(playerPos, oscillateAttack);
-            Debug.Log("ATTACK: "+oscillateAttack);
             GameObject bullet = Instantiate(projectile, transform.position, Quaternion.identity);
             var manager = bullet.GetComponent<ProjectileManager>();
             manager.Fire(playerOscillate.normalized, 2);
-            
-            yield return new WaitForSeconds(.1f);
+
+            yield return new WaitForSeconds(.2f);
+        }   
+    }
+
+    IEnumerator PulseForward()
+    {
+        animator.SetFloat("Speed", 1f);
+        for (int i = 0; i < 8; i++)
+        {
+            rb.AddForce((player.transform.position - transform.position).normalized, ForceMode2D.Force);
+            yield return new WaitForSeconds(2f);
         }
     }
 
@@ -138,6 +167,14 @@ public class FinalBoss : MonoBehaviour
             //GetComponent<NPCMovement>().enabled = true;
             GetComponent<BoxCollider2D>().enabled = true;
             GetComponent<CircleCollider2D>().enabled = true;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player" && !isActive)
+        {
+           isActive = true;
         }
     }
 }
