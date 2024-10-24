@@ -17,7 +17,7 @@ public class Collectible : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerHealth>().AddHealth(1);
+            collision.gameObject.GetComponent<PlayerHealth>()?.AddHealth(3);
             StartCoroutine(Collect());
         }
     }

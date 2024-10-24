@@ -15,7 +15,7 @@ public class NPCHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (gameObject.tag == "Enemy")
+        if (gameObject.tag == "Enemy" || gameObject.tag == "Boss")
         {
             Animator = GetComponent<Animator>();
             RB = GetComponent<Rigidbody2D>();
@@ -31,14 +31,17 @@ public class NPCHealth : MonoBehaviour
             if (gameObject.tag == "Enemy")
             {
                 GameManager.Instance.EnemyDestroyed();
-                StartCoroutine(Death());
+                StartCoroutine(EnemyDeath());
             }
+            else if (gameObject.tag == "Boss")
+            {
+                GameManager.Instance.OnComplete();
+                StartCoroutine(BossDeath());
+            }  
             else
             {
-                if (gameObject.tag == "Boss")
-                    GameManager.Instance.OnComplete();
                 Destroy(gameObject);
-            }             
+            }
         }
     }
     /// <summary>
@@ -59,13 +62,26 @@ public class NPCHealth : MonoBehaviour
         }
     }
 
-    private IEnumerator Death()
+    private IEnumerator EnemyDeath()
     {
         Sprite.color = Color.white;
         Animator.SetBool("Dead", true);
         gameObject.GetComponent<NPCMovement>().enabled = false;
         gameObject.GetComponent<RangedAttack>().StopAllCoroutines();
         gameObject.GetComponent<RangedAttack>().enabled = false;
+        RB.velocity = Vector3.zero;
+        RB.totalForce = Vector2.zero;
+        RB.gravityScale = 0f;
+        yield return new WaitForSeconds(0.5f);
+        GameObject.Find("Hitbox").GetComponent<PlayerHealth>().AddHealth(1);
+        Destroy(gameObject);
+    }
+
+    private IEnumerator BossDeath()
+    {
+        Sprite.color = Color.white;
+        Animator.SetBool("Dead", true);
+        gameObject.GetComponent<Boss>().enabled = false;
         RB.velocity = Vector3.zero;
         RB.totalForce = Vector2.zero;
         RB.gravityScale = 0f;

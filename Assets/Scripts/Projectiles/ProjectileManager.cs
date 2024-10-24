@@ -57,7 +57,11 @@ public class ProjectileManager : MonoBehaviour
         switch (collision.tag)
         {
             case "Player":
-                collision.GetComponent<PlayerHealth>().TakeDamage(1);
+                PlayerHealth health;
+                if (collision.TryGetComponent<PlayerHealth>(out health))
+                {
+                    health.TakeDamage(1);
+                }
                 gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
             case string s when IgnoreTags.Contains(s):
