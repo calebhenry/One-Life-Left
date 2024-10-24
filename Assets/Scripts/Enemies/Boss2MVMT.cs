@@ -6,7 +6,6 @@ using UnityEngine.Tilemaps;
 public class Boss2MVMT : MonoBehaviour
 {
     public Tilemap tilemap;
-    public float timeBetweenJumps = 5f;
     public float jumpMaxDist = 3f;
     private bool playerInSight;
     Time phaseTime;
@@ -29,7 +28,7 @@ public class Boss2MVMT : MonoBehaviour
                 HandleShooting();
                 break;
 
-            case BossStateDodging:
+            case BossState.Dodging:
                 HandleDodging();
                 break;
 
@@ -41,7 +40,7 @@ public class Boss2MVMT : MonoBehaviour
 
     private void HandleShooting()
     {
-
+        
     }
 
     private void HandleDodging()
@@ -51,7 +50,19 @@ public class Boss2MVMT : MonoBehaviour
 
     private void HandlePortal()
     {
+        BoundsInt bounds = tilemap.cellBounds;
+        //arbitrary number of attempts to find a valid spot
+        for(int i = 0; i <20; i++)
+        {
+            int randomX = Random.Range(bounds.x, (bounds.x + bounds.size.x));
+            int randomY = Random.Range(bounds.y, (bounds.y + bounds.size.y));
+            Vector3Int tilePosition = new Vector3Int(randomX, randomY, 0);
 
+            if(tilemap.HasTile(tilePosition) && Vector3.Distance(transform.position, tilemap.GetCellCenterWorld(tilePosition)) <= jumpMaxDist)
+            {
+                transform.position = tilemap.GetCellCenterWorld(tilePosition);  
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
