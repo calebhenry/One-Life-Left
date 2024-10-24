@@ -49,11 +49,11 @@ public class ScoreManager : MonoBehaviour
                     break;
             }
             PlayerPrefs.Save();
-            Time.GetComponent<TextMeshProUGUI>().text = $"Time: {time} (New Best!)";
+            Time.GetComponent<TextMeshProUGUI>().text = $"TIME: {time} (NEW BEST!)";
         }
         else
         {
-            Time.GetComponent<TextMeshProUGUI>().text = $"Time: {time} (Best: {bestTime})";
+            Time.GetComponent<TextMeshProUGUI>().text = $"TIME: {time} (BEST: {bestTime})";
         }
 
         if (bestCollectibles < GameManager.Collectibles)
@@ -71,11 +71,11 @@ public class ScoreManager : MonoBehaviour
                     break;
             }
             PlayerPrefs.Save();
-            Collectibles.GetComponent<TextMeshProUGUI>().text = $"Collectibles: {GameManager.Collectibles}/{GameManager.TotalCollectibles} (New Best!)";
+            Collectibles.GetComponent<TextMeshProUGUI>().text = $"COLLECTIBLES: {GameManager.Collectibles}/{GameManager.TotalCollectibles} (NEW BEST!)";
         }
         else
         {
-            Collectibles.GetComponent<TextMeshProUGUI>().text = $"Collectibles: {GameManager.Collectibles}/{GameManager.TotalCollectibles} (Best: {bestCollectibles}/{GameManager.TotalCollectibles})";
+            Collectibles.GetComponent<TextMeshProUGUI>().text = $"COLLECTIBLES: {GameManager.Collectibles}/{GameManager.TotalCollectibles} (BEST: {bestCollectibles}/{GameManager.TotalCollectibles})";
         }
         
     }

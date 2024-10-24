@@ -9,15 +9,13 @@ public class Boss : MonoBehaviour
     private GameObject player;
     private Rigidbody2D rb;
     private Vector3 home;
-    private bool playerInSight;
     private float startCycleTime;
     private SpriteRenderer sprite;
     private Animator animator;
     private bool firstCharge;
     Vector2 chargeDirection;
     private float chargeSpeed = 8;
-    private bool lastSwapDir = true;
-    private enum BossState { ChargingUp, Charging, Paused }
+    private enum BossState { ChargingUp, Charging, Paused, Waiting }
     private BossState currentState;
 
     void Awake()
@@ -40,7 +38,7 @@ public class Boss : MonoBehaviour
         startCycleTime = -1;
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        currentState = BossState.Paused;
+        currentState = BossState.Waiting;
         firstCharge = true;
     }
 
@@ -69,6 +67,7 @@ public class Boss : MonoBehaviour
         if (Time.time - startCycleTime <= 0.5f)
         {
             FacePlayer();
+            animator.SetBool("IsCharging", true);
         }
         else
         {
@@ -80,7 +79,7 @@ public class Boss : MonoBehaviour
     private void HandleCharging()
     {
         //Fixes the charge curving
-        if (firstCharge)
+        if (firstCharge) 
         {
             startCycleTime = Time.time;
             firstCharge = false;
@@ -89,45 +88,23 @@ public class Boss : MonoBehaviour
         }
         
         rb.velocity = chargeDirection * chargeSpeed;
+        string tag = Physics2D.Raycast(transform.position, chargeDirection, 0.5f).collider?.gameObject?.tag;
         if (Time.time - startCycleTime > 1.0f)
         {
+            animator.SetBool("IsCharging", false);
             currentState = BossState.Paused;
             startCycleTime = Time.time;
             // Check for collisions
         }
-        else if (Physics2D.Raycast(transform.position, chargeDirection, 0.5f).collider.gameObject.tag != "Player")
+        else if ( tag != "Player" && tag !=null)
         {
+            animator.SetBool("IsCharging", false);
             chargeDirection = Vector2.Reflect(chargeDirection, Physics2D.Raycast(transform.position, chargeDirection, 0.5f).normal);
             rb.velocity = chargeDirection * chargeSpeed; // Update velocity based on the new direction
         }
         if(Time.time - startCycleTime % .1f == 0)
         {
             rb.velocity = chargeDirection * 10000000;
-            if(Mathf.Abs(chargeDirection.y) > Mathf.Abs(chargeDirection.x) && lastSwapDir)
-            {
-                Vector3 leftRightShift = new Vector3(.5f,0.0f);
-                transform.position = transform.position +  leftRightShift;
-                lastSwapDir = !lastSwapDir;
-            }
-            else if(Mathf.Abs(chargeDirection.y) > Mathf.Abs(chargeDirection.x) && !lastSwapDir)
-            {
-                Vector3 leftRightShift = new Vector3(.5f, 0.0f);
-                transform.position = transform.position - leftRightShift;
-                lastSwapDir = !lastSwapDir;
-            }
-            else if (Mathf.Abs(chargeDirection.y) <= Mathf.Abs(chargeDirection.x) && lastSwapDir)
-            {
-                Vector3 leftRightShift = new Vector3(.5f, 0.0f);
-                transform.position = transform.position + leftRightShift;
-                lastSwapDir = !lastSwapDir;
-            }
-            else if (Mathf.Abs(chargeDirection.y) <= Mathf.Abs(chargeDirection.x) && !lastSwapDir)
-            {
-                Vector3 leftRightShift = new Vector3(.5f, 0.0f);
-                transform.position = transform.position - leftRightShift;
-                lastSwapDir = !lastSwapDir;
-            }
-
         }
     }
 
@@ -145,13 +122,13 @@ public class Boss : MonoBehaviour
     {
         Vector2 playerDirection = (player.transform.position - transform.position);
 
-        if (playerDirection.x > 0 && sprite.flipX)
-        {
-            sprite.flipX = false;
-        }
-        else if (playerDirection.x < 0 && !sprite.flipX)
+        if (playerDirection.x > 0 && !sprite.flipX)
         {
             sprite.flipX = true;
+        }
+        else if (playerDirection.x < 0 && sprite.flipX)
+        {
+            sprite.flipX = false;
         }
     }
 
@@ -159,8 +136,7 @@ public class Boss : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<PlayerHealth>().TakeDamage(1);
-            playerInSight = true;
+            collision.GetComponent<PlayerHealth>()?.TakeDamage(1);
             if (currentState == BossState.Paused)
             {
                 startCycleTime = Time.time; // Start charging up immediately if paused
@@ -175,7 +151,6 @@ public class Boss : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerInSight = false;
             currentState = BossState.Paused; // Pause if the player leaves sight
         }
     }
@@ -186,9 +161,8 @@ public class Boss : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().enabled = true;
             GetComponent<NPCHealth>().enabled = true;
-            //GetComponent<NPCMovement>().enabled = true;
             GetComponent<BoxCollider2D>().enabled = true;
-            GetComponent<CircleCollider2D>().enabled = true;
+            currentState = BossState.Paused;
         }
     }
 }

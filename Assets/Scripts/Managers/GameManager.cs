@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         OnStateChanged?.Invoke(GameState.Play);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
+    
     // Update is called once per frame
     void Update()
     {  
@@ -87,7 +87,25 @@ public class GameManager : MonoBehaviour
     public void ResetLevel()
     {
         var scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.buildIndex);
+        if (scene.name == "Level End")
+        {
+            switch (Level)
+            {
+                case Level.Level1:
+                    GoToScene("Level 1");
+                    break;
+                case Level.Level2:
+                    GoToScene("Level 2");
+                    break;
+                case Level.Level3:
+                    GoToScene("Level 3");
+                    break;
+            }
+        }
+        else
+        {
+            SceneManager.LoadScene(scene.buildIndex);
+        }
     }
 
     public void Quit()
@@ -102,7 +120,7 @@ public class GameManager : MonoBehaviour
 
     public void BossDestroyed()
     {
-
+        GetComponent<RoomManager>().EnableNextRoom();
     }
 
     public void UpdateEnergy(int energy)
@@ -118,6 +136,7 @@ public class GameManager : MonoBehaviour
     public void OnComplete()
     {
         OnProgress?.Invoke(Progress.Complete);
+        BossDestroyed();
     }
 
     public void OnExit()

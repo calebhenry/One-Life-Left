@@ -6,11 +6,13 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField]
     private int health = 5;
+    private int InitialHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.UpdatePlayerHealth(health);
+        InitialHealth = health;
     }
 
     // Update is called once per frame
@@ -34,6 +36,10 @@ public class PlayerHealth : MonoBehaviour
     public void AddHealth(int health)
     {
         this.health += health;
+        if (this.health > InitialHealth)
+        {
+            this.health = InitialHealth;
+        }
         GameManager.Instance.UpdatePlayerHealth(this.health);
     }
 }

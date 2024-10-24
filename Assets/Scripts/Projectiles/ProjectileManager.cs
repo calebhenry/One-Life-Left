@@ -13,7 +13,6 @@ public class ProjectileManager : MonoBehaviour
     {
         Player = GameObject.Find("Player");
         Rigidbody = GetComponent<Rigidbody2D>();
-        StartCoroutine(DelayedDestroyTesting());
         Deflected = false;
     }
 
@@ -31,6 +30,7 @@ public class ProjectileManager : MonoBehaviour
         }
         else
         {
+  
             ProcessCollisionDeflected(collision);
         }
     }
@@ -47,17 +47,22 @@ public class ProjectileManager : MonoBehaviour
 
     public void Deflect(Vector2 direction)
     {
+        GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.8f, 0.2f);
         Rigidbody.velocity = direction * Speed;
         Deflected = true;
     }
 
     private void ProcessCollisionNotDeflected(Collider2D collision)
     {
-        List<string> IgnoreTags = new() { "Enemy", "Attack", "Projectile" };
+        List<string> IgnoreTags = new() { "Enemy", "Boss", "Attack", "Projectile" };
         switch (collision.tag)
         {
             case "Player":
-                collision.GetComponent<PlayerHealth>().TakeDamage(1);
+                PlayerHealth health;
+                if (collision.TryGetComponent<PlayerHealth>(out health))
+                {
+                    health.TakeDamage(1);
+                }
                 gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
             case string s when IgnoreTags.Contains(s):
@@ -82,6 +87,10 @@ public class ProjectileManager : MonoBehaviour
                 collision.GetComponent<NPCHealth>().TakeDamage(1);
                 gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
+            case "Boss":
+                collision.GetComponent<NPCHealth>().TakeDamage(1);
+                gameObject.GetComponent<NPCHealth>().TakeDamage(1);
+                break;
             case string s when IgnoreTags.Contains(s):
                 break;
             case "Breakable":
@@ -92,20 +101,6 @@ public class ProjectileManager : MonoBehaviour
             default:
                 gameObject.GetComponent<NPCHealth>().TakeDamage(1);
                 break;
-        }
-    }
-
-    IEnumerator DelayedDestroyTesting()
-    {
-        yield return new WaitForSeconds(3f);
-        if (!Deflected)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            yield return new WaitForSeconds(3f);
-            Destroy(gameObject);
         }
     }
 }
