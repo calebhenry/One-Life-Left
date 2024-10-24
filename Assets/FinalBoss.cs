@@ -174,7 +174,28 @@ public class FinalBoss : MonoBehaviour
     {
         if (collision.tag == "Player" && !isActive)
         {
-           isActive = true;
+            GetComponent<CircleCollider2D>().enabled = false;
+            isActive = true; 
+        }
+
+        // bounce off player
+        if (collision.GetType().Equals(typeof(BoxCollider2D))
+            && collision.tag == "Player")
+        {
+            rb.AddForce((transform.position-player.transform.position).normalized*3f, ForceMode2D.Impulse);
+        }
+
+    }
+
+    // In the case it gets stuck on the player
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        // bounce off player
+        if (collision.GetType().Equals(typeof(BoxCollider2D))
+            && collision.tag == "Player")
+        {
+            rb.AddForce((transform.position - player.transform.position).normalized * 3f, ForceMode2D.Impulse);
         }
     }
+
 }

@@ -35,6 +35,7 @@ public class PlayerHealth : MonoBehaviour
     }
     public void AddHealth(int health)
     {
+        Debug.Log("ADD HEALTH CALLED");
         this.health += health;
         if (this.health > InitialHealth)
         {

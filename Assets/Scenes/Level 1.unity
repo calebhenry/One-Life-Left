@@ -12042,9 +12042,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 314cc88d530e447eeb64dbe465bf04d0, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 1
+  m_Pitch: 1.63
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -22481,6 +22481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
+  clip: {fileID: 0}
 --- !u!1001 &6140721829151862484
 PrefabInstance:
   m_ObjectHideFlags: 0

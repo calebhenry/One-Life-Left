@@ -11,19 +11,16 @@ public class NPCHealth : MonoBehaviour
     private Rigidbody2D RB;
     private SpriteRenderer Sprite;
     private bool CanDamage = true;
-
-    //for when bosses are put in
-    AudioSource audioSource;
+    public AudioClip clip;
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         if (gameObject.tag == "Enemy" || gameObject.tag == "Boss")
         {
             Animator = GetComponent<Animator>();
             RB = GetComponent<Rigidbody2D>();
-        } 
+        }
         Sprite = GetComponent<SpriteRenderer>();
     }
 
@@ -35,21 +32,21 @@ public class NPCHealth : MonoBehaviour
             //TODO: make sure bosses have sound as well, will trigger on demise
             if (gameObject.tag == "Enemy")
             {
+
                 GameManager.Instance.EnemyDestroyed();
-                audioSource.Play();
                 StartCoroutine(Death());
             }
             else if (gameObject.tag == "Boss")
             {
                 GameManager.Instance.OnComplete();
                 StartCoroutine(BossDeath());
-            }  
+            }
             else
             {
                 if (gameObject.tag == "Boss")
                     GameManager.Instance.OnComplete();
                 DestroyImmediate(gameObject);
-            }             
+            }
         }
     }
     /// <summary>
@@ -58,7 +55,7 @@ public class NPCHealth : MonoBehaviour
     /// <param name="damage">Amount to decrement by</param>
     public void TakeDamage(int damage)
     {
-        if (CanDamage) 
+        if (CanDamage)
         {
             health -= damage;
             if (health > 0)
@@ -88,6 +85,7 @@ public class NPCHealth : MonoBehaviour
         RB.gravityScale = 0f;
         yield return new WaitForSeconds(0.5f);
         GameObject.Find("Hitbox").GetComponent<PlayerHealth>().AddHealth(1);
+        AudioSource.PlayClipAtPoint(clip, transform.position);
         Destroy(gameObject);
     }
 
@@ -95,7 +93,10 @@ public class NPCHealth : MonoBehaviour
     {
         Sprite.color = Color.white;
         Animator.SetBool("Dead", true);
-        gameObject.GetComponent<Boss>().enabled = false;
+        if (gameObject.name == "FinalBoss")
+            gameObject.GetComponent<FinalBoss>().enabled = false;
+        else
+            gameObject.GetComponent<Boss>().enabled = false;
         RB.velocity = Vector3.zero;
         RB.totalForce = Vector2.zero;
         RB.gravityScale = 0f;
@@ -111,4 +112,6 @@ public class NPCHealth : MonoBehaviour
         Sprite.color = Color.white;
         CanDamage = true;
     }
+
 }
+
