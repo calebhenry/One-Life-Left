@@ -26,9 +26,14 @@ public class PlayerController : MonoBehaviour
     private bool Dashing = false;
     private int Energy = 0;
 
+
+    AudioSource audioSource;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         RigidBody = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
         Sprite = GetComponent<SpriteRenderer>();
@@ -144,6 +149,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                audioSource.Play();
                 Dashing = false;
                 TimeSinceDash = 0;
                 Animator.SetBool("Dashing", false);

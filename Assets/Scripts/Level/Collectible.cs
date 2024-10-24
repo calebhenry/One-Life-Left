@@ -1,14 +1,14 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
     private Animator Animator;
+    AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         Animator = GetComponent<Animator>();
         StartCoroutine(Instantiate());
     }
@@ -30,6 +30,7 @@ public class Collectible : MonoBehaviour
 
     private IEnumerator Collect()
     {
+        audioSource.Play();
         Animator.SetBool("Collected", true);
         GameManager.Collectibles += 1;
         gameObject.GetComponent<BoxCollider2D>().enabled = false;

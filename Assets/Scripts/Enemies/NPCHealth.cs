@@ -12,9 +12,12 @@ public class NPCHealth : MonoBehaviour
     private SpriteRenderer Sprite;
     private bool CanDamage = true;
 
+    AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         if (gameObject.tag == "Enemy")
         {
             Animator = GetComponent<Animator>();
@@ -28,6 +31,8 @@ public class NPCHealth : MonoBehaviour
     {
         if (health < 1)
         {
+            //TODO: make sure bosses have sound as well, will trigger on demise
+            audioSource.Play();
             if (gameObject.tag == "Enemy")
             {
                 GameManager.Instance.EnemyDestroyed();
