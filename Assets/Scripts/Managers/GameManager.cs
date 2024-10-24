@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         OnStateChanged?.Invoke(GameState.Play);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
+    
     // Update is called once per frame
     void Update()
     {  
@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
 
     public void BossDestroyed()
     {
-
+        GetComponent<RoomManager>().EnableNextRoom();
     }
 
     public void UpdateEnergy(int energy)
@@ -136,6 +136,7 @@ public class GameManager : MonoBehaviour
     public void OnComplete()
     {
         OnProgress?.Invoke(Progress.Complete);
+        BossDestroyed();
     }
 
     public void OnExit()

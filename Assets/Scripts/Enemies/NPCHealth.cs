@@ -31,7 +31,7 @@ public class NPCHealth : MonoBehaviour
             if (gameObject.tag == "Enemy")
             {
                 GameManager.Instance.EnemyDestroyed();
-                StartCoroutine(EnemyDeath());
+                StartCoroutine(Death());
             }
             else if (gameObject.tag == "Boss")
             {
@@ -40,8 +40,10 @@ public class NPCHealth : MonoBehaviour
             }  
             else
             {
-                Destroy(gameObject);
-            }
+                if (gameObject.tag == "Boss")
+                    GameManager.Instance.OnComplete();
+                DestroyImmediate(gameObject);
+            }             
         }
     }
     /// <summary>
@@ -62,7 +64,13 @@ public class NPCHealth : MonoBehaviour
         }
     }
 
-    private IEnumerator EnemyDeath()
+
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    private IEnumerator Death()
     {
         Sprite.color = Color.white;
         Animator.SetBool("Dead", true);
