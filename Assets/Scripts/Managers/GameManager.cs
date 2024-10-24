@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     public static Level Level = Level.Level1;
 
+    private AudioSource audioSource;
+
     private void Awake()
     {
         Instance = this;
@@ -33,8 +35,9 @@ public class GameManager : MonoBehaviour
     {
         OnStateChanged?.Invoke(GameState.Play);
         SceneManager.sceneLoaded += OnSceneLoaded;
+        audioSource = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
     }
-    
+
     // Update is called once per frame
     void Update()
     {  
@@ -57,6 +60,7 @@ public class GameManager : MonoBehaviour
         {
             case "Main Menu":
                 SceneManager.LoadScene(0);
+                audioSource.Pause();
                 break;
             case "Level 1":
                 Level = Level.Level1;
@@ -72,9 +76,11 @@ public class GameManager : MonoBehaviour
                 break;
             case "Level End":
                 SceneManager.LoadScene(4);
+                audioSource.Pause();
                 break;
             case "End Menu":
                 SceneManager.LoadScene(5);
+                audioSource.Pause();
                 break;
         }
     }
@@ -82,6 +88,7 @@ public class GameManager : MonoBehaviour
     public void OnFail()
     {
         OnStateChanged?.Invoke(GameState.Failed);
+        audioSource.Pause();
     }
 
     public void ResetLevel()

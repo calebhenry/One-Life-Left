@@ -135,6 +135,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            audioSource.Play();
             int numCollisons = RigidBody.Cast(DashDirection, ContactFilter, Collisions, Offset + Time.deltaTime *DashSpeed);
             if (numCollisons == 0)
             {
@@ -149,7 +150,6 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                audioSource.Play();
                 Dashing = false;
                 TimeSinceDash = 0;
                 Animator.SetBool("Dashing", false);

@@ -12,6 +12,7 @@ public class NPCHealth : MonoBehaviour
     private SpriteRenderer Sprite;
     private bool CanDamage = true;
 
+    //for when bosses are put in
     AudioSource audioSource;
 
     // Start is called before the first frame update
