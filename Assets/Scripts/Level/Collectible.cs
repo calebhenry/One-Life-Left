@@ -15,9 +15,10 @@ public class Collectible : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        PlayerHealth health;
+        if (collision.gameObject.CompareTag("Player") && collision.gameObject.TryGetComponent<PlayerHealth>(out health))
         {
-            collision.gameObject.GetComponent<PlayerHealth>()?.AddHealth(3);
+            health.AddHealth(3);
             StartCoroutine(Collect());
         }
     }

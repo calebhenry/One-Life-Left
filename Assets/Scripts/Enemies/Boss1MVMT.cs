@@ -136,7 +136,7 @@ public class Boss : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<PlayerHealth>().TakeDamage(1);
+            collision.GetComponent<PlayerHealth>()?.TakeDamage(1);
             if (currentState == BossState.Paused)
             {
                 startCycleTime = Time.time; // Start charging up immediately if paused

@@ -87,7 +87,25 @@ public class GameManager : MonoBehaviour
     public void ResetLevel()
     {
         var scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.buildIndex);
+        if (scene.name == "Level End")
+        {
+            switch (Level)
+            {
+                case Level.Level1:
+                    GoToScene("Level 1");
+                    break;
+                case Level.Level2:
+                    GoToScene("Level 2");
+                    break;
+                case Level.Level3:
+                    GoToScene("Level 3");
+                    break;
+            }
+        }
+        else
+        {
+            SceneManager.LoadScene(scene.buildIndex);
+        }
     }
 
     public void Quit()
