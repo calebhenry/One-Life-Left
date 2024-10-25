@@ -412,7 +412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 5
   DashSpeed: 10
-  Offset: 0
+  Offset: 0.1
   DashTime: 0.2
   DashEnergyCost: 5
   ContactFilter:

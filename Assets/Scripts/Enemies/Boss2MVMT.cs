@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
@@ -15,9 +16,18 @@ public class Boss2MVMT : MonoBehaviour
     [SerializeField]
     GameObject Enemy;
     [SerializeField]
+    private float Speed = 1;
+    [Header("Attacks")]
+    [SerializeField]
     private float AttackInterval;
     [SerializeField]
-    private float Speed = 1;
+    private int NumberOfBursts = 4;
+    [SerializeField]
+    private float AttackPause = 0.75f;
+    [SerializeField]
+    private int LengthOfBeam = 50;
+    [SerializeField]
+    private int BeamBurstInterval = 15; // How often a beam shot bursts
     private GameObject Player;
     private bool playerInSight;
     private bool Ready = true;
@@ -50,7 +60,7 @@ public class Boss2MVMT : MonoBehaviour
             if (TimeSinceAttack >= AttackInterval && Ready)
             {
                 TimeSinceAttack = 0;
-                StartCoroutine(BurstAttack(4));
+                StartCoroutine(BurstAttack(NumberOfBursts));
             }
             if (!Moving)
             {
@@ -63,6 +73,18 @@ public class Boss2MVMT : MonoBehaviour
             }
             TimeSinceAttack += Time.deltaTime;
         }
+    }
+
+    IEnumerator Move()
+    {
+        Moving = true;
+        var random = new System.Random();
+        Destination = targets.Where(t => t.position != Destination).ToArray()[random.Next(targets.Count - 2)].position;
+        while (Vector2.Distance(Destination, transform.position) > 0.5)
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
+        StartCoroutine(BeamAttack());
     }
 
     IEnumerator BurstAttack(int numProjectiles)
@@ -83,24 +105,17 @@ public class Boss2MVMT : MonoBehaviour
         animator.SetBool("Attacking", false);
     }
 
-    IEnumerator Move()
+    IEnumerator BeamAttack()
     {
-        Moving = true;
         var random = new System.Random();
-        Destination = targets.Where( t => t.position != Destination).ToArray()[random.Next(targets.Count -2)].position;
-        while (Vector2.Distance(Destination, transform.position) > 0.5)
-        {
-            yield return new WaitForSeconds(0.2f);
-        }
-
         Ready = false;
-        StopCoroutine(BurstAttack(4));
-        yield return new WaitForSeconds(0.75f);
+        StopCoroutine(BurstAttack(NumberOfBursts));
+        yield return new WaitForSeconds(AttackPause);
         animator.SetBool("Attacking", true);
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < LengthOfBeam; i++)
         {
             GameObject projectile;
-            if (i % 15 == 0)
+            if (i % BeamBurstInterval == 0)
             {
                 projectile = Instantiate(BurstProjectile, gameObject.transform.position, Quaternion.identity);
             }
@@ -116,7 +131,7 @@ public class Boss2MVMT : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         animator.SetBool("Attacking", false);
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(AttackPause);
         Instantiate(Enemy, targets.Where(t => t.position != Destination).ToArray()[random.Next(targets.Count - 2)].position, Quaternion.identity);
         Ready = true;
         Moving = false;
