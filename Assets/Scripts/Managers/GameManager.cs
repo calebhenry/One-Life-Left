@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         Instance = this;
     }
 
@@ -34,7 +33,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         OnStateChanged?.Invoke(GameState.Play);
-        SceneManager.sceneLoaded += OnSceneLoaded;
         audioSource = GameObject.Find("BackgroundMusic")?.GetComponent<AudioSource>();
     }
 
