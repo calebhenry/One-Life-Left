@@ -5579,7 +5579,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 314cc88d530e447eeb64dbe465bf04d0, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -9869,8 +9869,12 @@ MonoBehaviour:
   Projectile: {fileID: 8443401251940155333, guid: 47a1059bf31b83345bf1f6173085cb62, type: 3}
   BurstProjectile: {fileID: 3404165438093989718, guid: 3fba7c4a793d8e942a211e19b6bb0192, type: 3}
   Enemy: {fileID: 4264523900696734018, guid: 9f1d6e3707518114dabf1b4e9967d08f, type: 3}
-  AttackInterval: 3
   Speed: 0.8
+  AttackInterval: 3
+  NumberOfBursts: 4
+  AttackPause: 0.75
+  LengthOfBeam: 50
+  BeamBurstInterval: 15
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
