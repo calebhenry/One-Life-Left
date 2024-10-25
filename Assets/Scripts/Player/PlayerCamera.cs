@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -8,7 +11,22 @@ public class PlayerCamera : MonoBehaviour
     public float VerticalTrackingDistance;
     private GameObject Player;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        Player = GameObject.FindWithTag("Player");
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Player = GameObject.FindWithTag("Player");
     }

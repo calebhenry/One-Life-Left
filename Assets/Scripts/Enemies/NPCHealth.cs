@@ -95,6 +95,9 @@ public class NPCHealth : MonoBehaviour
         Animator.SetBool("Dead", true);
         if (gameObject.name == "FinalBoss")
             gameObject.GetComponent<FinalBoss>().enabled = false;
+        else if (gameObject.name == "Boss2")
+            Debug.Log("Die");
+        //gameObject.GetComponent<Boss2MVMT>().enabled = false;
         else
             gameObject.GetComponent<Boss>().enabled = false;
         RB.velocity = Vector3.zero;
