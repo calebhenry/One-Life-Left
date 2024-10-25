@@ -54,6 +54,9 @@ TagManager:
   - name: Level Decorations
     uniqueID: 160819807
     locked: 0
+  - name: 'Level Decorations 2 '
+    uniqueID: 2961815181
+    locked: 0
   - name: Player
     uniqueID: 2517084711
     locked: 0

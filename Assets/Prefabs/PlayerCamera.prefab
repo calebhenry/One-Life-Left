@@ -151,9 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229ee09d3b695e24b92e484fc68f69cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  HorizontalTrackingDistance: 3
-  VerticalTrackingDistance: 2
+  HorizontalTrackingDistance: 2
+  VerticalTrackingDistance: 0
 --- !u!114 &5408072811403168377
 MonoBehaviour:
   m_ObjectHideFlags: 0

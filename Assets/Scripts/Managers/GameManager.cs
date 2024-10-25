@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public static float LevelTime = 0;
 
     public static Level Level = Level.Level1;
+    private bool Completed = false;
 
     private AudioSource audioSource;
 
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToScene(string scene)
     {
+        Completed = false;
         switch (scene)
         {
             case "Main Menu":
@@ -140,6 +142,8 @@ public class GameManager : MonoBehaviour
     public void OnComplete()
     {
         OnProgress?.Invoke(Progress.Complete);
+        Completed = true;
+        
     }
 
     public void OnExit()
@@ -167,7 +171,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
         EnemiesLeft = GameObject.FindGameObjectsWithTag("Enemy").Count();
-        if (EnemiesLeft == 0)
+        if (EnemiesLeft == 0 && !Completed)
         {
             OnProgress?.Invoke(Progress.BossRemaining);
         }

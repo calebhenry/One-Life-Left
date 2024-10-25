@@ -15,7 +15,7 @@ public class Boss : MonoBehaviour
     private bool firstCharge;
     Vector2 chargeDirection;
     private float chargeSpeed = 8;
-    private enum BossState { ChargingUp, Charging, Paused, Waiting }
+    private enum BossState { ChargingUp, Charging, Paused, Waiting, Looking }
     private BossState currentState;
 
     void Awake()
@@ -59,8 +59,23 @@ public class Boss : MonoBehaviour
             case BossState.Paused:
                 HandlePaused();
                 break;
+
+            case BossState.Looking:
+                HandleLooking();
+                break;
         }
     }
+    private void HandleLooking()
+    {
+        chargeDirection = (player.transform.position - transform.position).normalized;
+        string tag = Physics2D.Raycast(transform.position, chargeDirection, 100f).collider?.gameObject?.tag;
+        Debug.Log(tag);
+        if (tag == "Player")
+        {
+            currentState = BossState.Paused;
+        }
+    }
+
     //Anim 1: Rearing up faces player during this time
     private void HandleChargingUp()
     {
@@ -162,7 +177,7 @@ public class Boss : MonoBehaviour
             GetComponent<SpriteRenderer>().enabled = true;
             GetComponent<NPCHealth>().enabled = true;
             GetComponent<BoxCollider2D>().enabled = true;
-            currentState = BossState.Paused;
+            currentState = BossState.Looking;
         }
     }
 }

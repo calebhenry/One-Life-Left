@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 6
+  clip: {fileID: 0}
 --- !u!114 &1742307509978628044
 MonoBehaviour:
   m_ObjectHideFlags: 0
