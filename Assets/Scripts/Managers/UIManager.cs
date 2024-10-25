@@ -72,7 +72,7 @@ public class UIManager : MonoBehaviour
             case Progress.BossRemaining:
                 if (!UpdateText)
                     break;
-                Objective.GetComponent<TextMeshProUGUI>().text = "Objective: Kill The Boss";
+                Objective.GetComponent<TextMeshProUGUI>().text = "Objective: Find And Kill The Boss";
                 UpdateText = false;
                 break;
             case Progress.Complete:
