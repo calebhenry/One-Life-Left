@@ -1,67 +1,154 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.U2D;
 
 public class Boss2MVMT : MonoBehaviour
 {
-    public Tilemap tilemap;
-    public float jumpMaxDist = 3f;
+    [SerializeField]
+    GameObject Projectile;
+    [SerializeField]
+    GameObject BurstProjectile;
+    [SerializeField]
+    GameObject Enemy;
+    [SerializeField]
+    private float Speed = 1;
+    [Header("Attacks")]
+    [SerializeField]
+    private float AttackInterval;
+    [SerializeField]
+    private int NumberOfBursts = 4;
+    [SerializeField]
+    private float AttackPause = 0.75f;
+    [SerializeField]
+    private int LengthOfBeam = 50;
+    [SerializeField]
+    private int BeamBurstInterval = 15; // How often a beam shot bursts
+    private GameObject Player;
     private bool playerInSight;
-    Time phaseTime;
-    private enum BossState { Shooting, Dodging, Portal }
-    private BossState currentState;
-    private bool lastStateShooting;
+    private bool Ready = true;
+    private bool Moving = false;
+    private Rigidbody2D rb;
+    private NPCHealth BossHealth;
+    private Animator animator;
+    private SpriteRenderer sprite;
+    private float TimeSinceAttack;
+    private Vector3 Destination;
+    private List<Transform> targets;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentState = BossState.Shooting;
-        lastStateShooting = true;
+        Player = GameObject.Find("Player");
+        BossHealth = GetComponent<NPCHealth>();
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+        targets = GameObject.Find("Destinations").GetComponentsInChildren<Transform>().ToList();
+        TimeSinceAttack = AttackInterval - 1;
     }
 
     void FixedUpdate()
     {
-        switch (currentState)
+        if (playerInSight)
         {
-            case BossState.Shooting:
-                HandleShooting();
-                break;
-
-            case BossState.Dodging:
-                HandleDodging();
-                break;
-
-            case BossState.Portal:
-                HandlePortal();
-                break;
+            FacePlayer();
+            if (TimeSinceAttack >= AttackInterval && Ready)
+            {
+                TimeSinceAttack = 0;
+                StartCoroutine(BurstAttack(NumberOfBursts));
+            }
+            if (!Moving)
+            {
+                StartCoroutine(Move());
+            }
+            else if (Vector2.Distance(Destination, transform.position) > 0.5)
+            {
+                var direction = Destination - transform.position;
+                rb.MovePosition((Vector3)rb.position + Speed * Time.deltaTime * direction.normalized);
+            }
+            TimeSinceAttack += Time.deltaTime;
         }
     }
 
-    private void HandleShooting()
+    IEnumerator Move()
     {
-        
-    }
-
-    private void HandleDodging()
-    {
-
-    }
-
-    private void HandlePortal()
-    {
-        BoundsInt bounds = tilemap.cellBounds;
-        //arbitrary number of attempts to find a valid spot
-        for(int i = 0; i <20; i++)
+        Moving = true;
+        var random = new System.Random();
+        Destination = targets.Where(t => t.position != Destination).ToArray()[random.Next(targets.Count - 2)].position;
+        while (Vector2.Distance(Destination, transform.position) > 0.5)
         {
-            int randomX = Random.Range(bounds.x, (bounds.x + bounds.size.x));
-            int randomY = Random.Range(bounds.y, (bounds.y + bounds.size.y));
-            Vector3Int tilePosition = new Vector3Int(randomX, randomY, 0);
+            yield return new WaitForSeconds(0.2f);
+        }
+        StartCoroutine(BeamAttack());
+    }
 
-            if(tilemap.HasTile(tilePosition) && Vector3.Distance(transform.position, tilemap.GetCellCenterWorld(tilePosition)) <= jumpMaxDist)
+    IEnumerator BurstAttack(int numProjectiles)
+    {
+        var random = new System.Random();
+        animator.SetBool("Attacking", true);
+        for (int i = 0; i < numProjectiles; i++)
+        {
+            GameObject projectile = Instantiate(BurstProjectile, gameObject.transform.position, Quaternion.identity);
+            ProjectileManager manager;
+            if (projectile.TryGetComponent<ProjectileManager>(out manager))
             {
-                transform.position = tilemap.GetCellCenterWorld(tilePosition);  
+                manager.BurstTime = (float) (manager.BurstTime + (0.2 * random.Next(5)));
+                manager.Fire((Player.transform.position - transform.position).normalized, 4);
             }
+            yield return new WaitForSeconds(0.2f);
+        }
+        animator.SetBool("Attacking", false);
+    }
+
+    IEnumerator BeamAttack()
+    {
+        var random = new System.Random();
+        Ready = false;
+        StopCoroutine(BurstAttack(NumberOfBursts));
+        yield return new WaitForSeconds(AttackPause);
+        animator.SetBool("Attacking", true);
+        for (int i = 0; i < LengthOfBeam; i++)
+        {
+            GameObject projectile;
+            if (i % BeamBurstInterval == 0)
+            {
+                projectile = Instantiate(BurstProjectile, gameObject.transform.position, Quaternion.identity);
+            }
+            else
+            {
+                projectile = Instantiate(Projectile, gameObject.transform.position, Quaternion.identity);
+            }
+            ProjectileManager manager;
+            if (projectile.TryGetComponent<ProjectileManager>(out manager))
+            {
+                manager.Fire((Player.transform.position - transform.position).normalized, 4);
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        animator.SetBool("Attacking", false);
+        yield return new WaitForSeconds(AttackPause);
+        Instantiate(Enemy, targets.Where(t => t.position != Destination).ToArray()[random.Next(targets.Count - 2)].position, Quaternion.identity);
+        Ready = true;
+        Moving = false;
+        yield return null;
+    }
+
+    private void FacePlayer()
+    {
+        Vector2 playerDirection = (Player.transform.position - transform.position);
+
+        if (playerDirection.x > 0 && !sprite.flipX)
+        {
+            sprite.flipX = true;
+        }
+        else if (playerDirection.x < 0 && sprite.flipX)
+        {
+            sprite.flipX = false;
         }
     }
 
@@ -69,28 +156,9 @@ public class Boss2MVMT : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<PlayerHealth>().TakeDamage(1);
             playerInSight = true;
         }
     }
-
-
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInSight = false;
-        }
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     
     void Awake()
     {
@@ -108,7 +176,6 @@ public class Boss2MVMT : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().enabled = true;
             GetComponent<NPCHealth>().enabled = true;
-            //GetComponent<NPCMovement>().enabled = true;
             GetComponent<BoxCollider2D>().enabled = true;
             GetComponent<CircleCollider2D>().enabled = true;
         }

@@ -38,6 +38,11 @@ public class GameManager : MonoBehaviour
         audioSource = GameObject.Find("BackgroundMusic")?.GetComponent<AudioSource>();
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     // Update is called once per frame
     void Update()
     {  
@@ -122,11 +127,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine("SetCheckEnemies");
     }
 
-    public void BossDestroyed()
-    {
-        GetComponent<RoomManager>().EnableNextRoom();
-    }
-
     public void UpdateEnergy(int energy)
     {
         Energy++;
@@ -140,7 +140,6 @@ public class GameManager : MonoBehaviour
     public void OnComplete()
     {
         OnProgress?.Invoke(Progress.Complete);
-        BossDestroyed();
     }
 
     public void OnExit()

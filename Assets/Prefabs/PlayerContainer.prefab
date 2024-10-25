@@ -412,7 +412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 5
   DashSpeed: 10
-  Offset: 0
+  Offset: 0.1
   DashTime: 0.2
   DashEnergyCost: 5
   ContactFilter:
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 8727524290471342757}
   m_Layer: 0
   m_Name: PlayerContainer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

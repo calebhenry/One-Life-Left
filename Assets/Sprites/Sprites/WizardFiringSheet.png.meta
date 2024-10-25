@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e0567ef8abc37c140b039fba9dd83dac
+guid: b01569313769b4e4f93aea1421572d2c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -107,19 +107,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Windows Store Apps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -136,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: roomba_shock_0
+      name: WizardFiringSheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 144
-        width: 48
-        height: 48
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe86b7efc32e6b24fb983088c8b96152
-      internalID: -1519917904
+      spriteID: 71636b7fc3ff40644af0f755fb3d0017
+      internalID: -1871182980
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: roomba_shock_1
+      name: WizardFiringSheet_1
       rect:
         serializedVersion: 2
-        x: 48
-        y: 144
-        width: 48
-        height: 48
+        x: 64
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 36be1178525ff9045be57de7c09c5930
-      internalID: 1881970383
+      spriteID: 430b306d55ee0a64eaf58034fe256a6a
+      internalID: 1208251288
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: roomba_shock_2
+      name: WizardFiringSheet_2
       rect:
         serializedVersion: 2
-        x: 96
-        y: 144
-        width: 48
-        height: 48
+        x: 128
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,41 +179,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b6fb0a537a293a64f8363c84f98a6a65
-      internalID: 84594404
+      spriteID: 1d48a79e126662c44805b05e73bc7f44
+      internalID: -1116003617
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: roomba_shock_3
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 144
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bfaf0df81b8b42548976009ae4ce90f5
-      internalID: -953595496
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: roomba_shock_4
+      name: WizardFiringSheet_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 48
-        height: 48
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -234,20 +200,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 365abc3f0ae6d514598f471bf58c30ca
-      internalID: 1031012681
+      spriteID: deb8acb71a7e5ec4da400015c6325367
+      internalID: -2115438195
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: roomba_shock_5
+      name: WizardFiringSheet_4
       rect:
         serializedVersion: 2
-        x: 48
-        y: 96
-        width: 48
-        height: 48
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -255,20 +221,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d24ecd443b2c8e04292aa10a9ba9c03b
-      internalID: -646806375
+      spriteID: 282eb6577b603664b8d442651fb1f6b5
+      internalID: -242323797
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: roomba_shock_6
+      name: WizardFiringSheet_5
       rect:
         serializedVersion: 2
-        x: 96
-        y: 96
-        width: 48
-        height: 48
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -276,125 +242,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 77ddb3832885ff24f91c3f42e9869c4f
-      internalID: -153336836
+      spriteID: e227ffdc98c00f24e962297b5e0cd197
+      internalID: 277453708
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: roomba_shock_7
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 96
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 294f84dddc493284dacb0456755ecc10
-      internalID: 246132745
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: roomba_shock_8
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 48
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5bb620646cab84147b7400b10e2633df
-      internalID: -1467377172
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: roomba_shock_9
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 48
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b35849b85be717b4783604559dd982c5
-      internalID: -1848026024
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: roomba_shock_10
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 48
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9df8b2ca976e760428c8aeaa96f6eb55
-      internalID: -152840033
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: roomba_shock_11
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 48
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7243738755bf79c458c5df84ff44a7a0
-      internalID: -314098232
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: roomba_shock_12
+      name: WizardFiringSheet_6
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -402,20 +263,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b488dd2678fc7ce42a91caadee9efd2d
-      internalID: -992570388
+      spriteID: 1f7c4a87398602347a841d2ba035be40
+      internalID: -1004178505
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: roomba_shock_13
+      name: WizardFiringSheet_7
       rect:
         serializedVersion: 2
-        x: 48
+        x: 64
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -423,20 +284,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 687d2cc61524b9a48ade5a2cbeaf279f
-      internalID: 1561958548
+      spriteID: a2a132934f56640499f303ef826ad555
+      internalID: -392607181
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: roomba_shock_14
+      name: WizardFiringSheet_8
       rect:
         serializedVersion: 2
-        x: 96
+        x: 128
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -444,29 +305,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e5d00daa13c6f9e4893eb49635af0328
-      internalID: 2142401444
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: roomba_shock_15
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a4b57e8c93d5e744c9c7bbe2cd5a4774
-      internalID: -960442341
+      spriteID: d0d04393465150e45a6d3d11fa99a908
+      internalID: -1105082125
       vertices: []
       indices: 
       edges: []
@@ -482,22 +322,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      roomba_shock_0: -1519917904
-      roomba_shock_1: 1881970383
-      roomba_shock_10: -152840033
-      roomba_shock_11: -314098232
-      roomba_shock_12: -992570388
-      roomba_shock_13: 1561958548
-      roomba_shock_14: 2142401444
-      roomba_shock_15: -960442341
-      roomba_shock_2: 84594404
-      roomba_shock_3: -953595496
-      roomba_shock_4: 1031012681
-      roomba_shock_5: -646806375
-      roomba_shock_6: -153336836
-      roomba_shock_7: 246132745
-      roomba_shock_8: -1467377172
-      roomba_shock_9: -1848026024
+      WizardFiringSheet_0: -1871182980
+      WizardFiringSheet_1: 1208251288
+      WizardFiringSheet_2: -1116003617
+      WizardFiringSheet_3: -2115438195
+      WizardFiringSheet_4: -242323797
+      WizardFiringSheet_5: 277453708
+      WizardFiringSheet_6: -1004178505
+      WizardFiringSheet_7: -392607181
+      WizardFiringSheet_8: -1105082125
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

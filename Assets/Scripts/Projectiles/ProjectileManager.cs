@@ -1,12 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileManager : MonoBehaviour
 {
+    public bool WillBurst = false;
+    public float BurstTime = 0;
+    public GameObject Projectile;
     private GameObject Player;
     private Rigidbody2D Rigidbody;
-    private bool Deflected;
+    public bool Deflected;
     private float Speed = 0f;
     // Start is called before the first frame update
     void Start()
@@ -19,7 +23,17 @@ public class ProjectileManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (WillBurst)
+        {
+            if (BurstTime < 0)
+            {
+                Burst(8);
+            }
+            else
+            {
+                BurstTime -= Time.deltaTime;
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -50,6 +64,26 @@ public class ProjectileManager : MonoBehaviour
         GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.8f, 0.2f);
         Rigidbody.velocity = direction * Speed;
         Deflected = true;
+    }
+
+    public void Burst(int number)
+    {
+        var random = new System.Random().Next(5);
+        for (int i = 0; i < number; i++)
+        {
+            GameObject projectile = Instantiate(Projectile, gameObject.transform.position, Quaternion.identity);
+            ProjectileManager manager;
+            if (projectile.TryGetComponent<ProjectileManager>(out manager))
+            {
+                if (Deflected)
+                {
+                    manager.Deflected = true;
+                }
+                float angle = (float) (Mathf.Deg2Rad * ((360.0 / number) * i + random));
+                manager.Fire(new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized, 4);
+            }
+        }
+        Destroy(gameObject);
     }
 
     private void ProcessCollisionNotDeflected(Collider2D collision)
