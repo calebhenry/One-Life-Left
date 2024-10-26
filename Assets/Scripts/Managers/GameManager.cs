@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
         {
             TotalCollectibles = FindObjectsOfType<Collectible>().Count();
             TotalCollectibles += FindObjectsOfType<Breakable>().Count(obj => obj.ContainsCollectible);
+            TotalEnemies = GameObject.FindGameObjectsWithTag("Enemy").Count();
+            EnemiesLeft = TotalEnemies;
             Collectibles = 0;
         }
     }

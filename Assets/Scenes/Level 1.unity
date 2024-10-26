@@ -21903,6 +21903,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5394925501707088667, guid: 32248d2b0e9c2114680b70e5c412323c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 484209232}
+    - target: {fileID: 5394925501707088667, guid: 32248d2b0e9c2114680b70e5c412323c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToScene
+      objectReference: {fileID: 0}
     - target: {fileID: 5591695837378001353, guid: 32248d2b0e9c2114680b70e5c412323c, type: 3}
       propertyPath: m_Layer
       value: 0

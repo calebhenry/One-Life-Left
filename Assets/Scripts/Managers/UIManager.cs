@@ -46,9 +46,6 @@ public class UIManager : MonoBehaviour
             PlayerPrefs.SetFloat("Volume", 1);
             PlayerPrefs.Save();
         }
-        PauseMenu.GetComponentInChildren<Slider>().value = PlayerPrefs.GetFloat("Volume");
-        GameManager.Instance.TotalEnemies = GameObject.FindGameObjectsWithTag("Enemy").Count();
-        GameManager.Instance.EnemiesLeft = GameManager.Instance.TotalEnemies;
     }
 
     // Update is called once per frame
